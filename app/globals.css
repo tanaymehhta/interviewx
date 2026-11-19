@@ -1,26 +1,165 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Ported from design/mock/ix.css. Tokens live on <html>; data-theme comes from the server. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper); --color-ivory: var(--ivory); --color-ink: var(--ink); --color-stone: var(--stone);
+  --color-olive: var(--olive); --color-on-olive: var(--on-olive); --color-garnet: var(--garnet); --color-gold: var(--gold);
+  --color-hairline: var(--hair);
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-open-sans), system-ui, sans-serif;
+}
+html{
+  --paper:#FFFFFF; --ivory:#F8F5EE; --ink:#2A2826; --stone:#696866; --olive:#383E28; --olive-2:#2B301E;
+  --on-olive:#FFFFFF; --garnet:#7B2B24; --gold:#E9D58A; --gold-soft:#F6EDC8; --hair:#E5E2DA;
+  --ease:cubic-bezier(0.2,0,0,1);
+  font-family:var(--font-sans); font-weight:300; font-size:16px; line-height:1.8;
+  color:var(--stone); background:var(--paper); -webkit-font-smoothing:antialiased;
+  min-height:100vh; box-sizing:border-box;
+}
+html[data-theme="dark"]{
+  --paper:#1C1B19; --ivory:#252320; --ink:#F3EFE6; --stone:#B3AEA4; --olive:#A9B08A; --olive-2:#BCC29F;
+  --on-olive:#1C1B19; --garnet:#D9897D; --gold:#C9B66C; --gold-soft:#3A3524; --hair:#3A3733;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+
+.serif{font-family:var(--font-serif); font-weight:300; color:var(--ink); letter-spacing:-0.01em}
+.ital{font-style:italic; color:var(--garnet)}
+.eyebrow{font-family:var(--font-sans); font-weight:400; font-size:12px; line-height:1.4; letter-spacing:.18em; text-transform:uppercase; color:var(--stone)}
+.ink{color:var(--ink)} .garnet{color:var(--garnet)} .olive{color:var(--olive)}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1200px; margin:0 auto; padding:0 24px}
+
+/* top bar */
+.topbar{display:flex; align-items:center; gap:28px; flex-wrap:wrap; padding:22px 0; border-bottom:1px solid var(--hair)}
+.mark{font-family:var(--font-serif); font-size:28px; font-weight:400; color:var(--ink); text-decoration:none; letter-spacing:-0.01em}
+.mark i{color:var(--garnet)}
+.nav{color:var(--stone); text-decoration:none; font-size:15px; font-weight:400; background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat; transition-property:background-size,color; transition-duration:200ms; transition-timing-function:var(--ease); padding-bottom:2px}
+.nav:hover,.nav.on{color:var(--ink); background-size:100% 1px}
+.switcher{display:inline-flex; align-items:center; gap:10px; border:1px solid var(--hair); padding:8px 14px; font-size:14px; color:var(--ink); font-weight:400; background:var(--paper); cursor:pointer; transition:border-color 150ms ease-out}
+.switcher:hover{border-color:var(--ink)}
+
+/* buttons */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:56px; padding:0 44px; background:var(--olive); color:var(--on-olive); border:1px solid var(--olive); border-radius:0;
+  font-family:var(--font-serif); font-size:19px; font-weight:500; letter-spacing:.01em; text-decoration:none; cursor:pointer;
+  transition-property:scale,background-color,color,border-color; transition-duration:150ms; transition-timing-function:ease-out}
+.btn:hover{background:var(--olive-2); border-color:var(--olive-2)}
+.btn:active{scale:.96}
+.btn.ghost{background:transparent; color:var(--ink); border-color:var(--ink)}
+.btn.ghost:hover{background:var(--ink); color:var(--paper)}
+.btn.sm{min-height:44px; padding:0 22px; font-size:17px}
+.btn.danger{background:var(--garnet); border-color:var(--garnet); color:var(--paper)}
+.btn .arr{display:inline-block; transition:translate 200ms var(--ease)}
+.btn:hover .arr{translate:4px 0}
+.tlink{color:var(--ink); text-decoration:none; font-weight:400; background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat; transition:background-size 250ms var(--ease); padding-bottom:1px; cursor:pointer; border:0; font-family:inherit; font-size:inherit; background-color:transparent}
+.tlink:hover{background-size:0 1px}
+
+/* surfaces */
+.card{border:1px solid var(--hair); border-radius:2px; background:var(--paper)}
+.card.soft{background:var(--ivory); border-color:transparent}
+.lift{transition-property:translate,border-color; transition-duration:200ms; transition-timing-function:var(--ease)}
+.lift:hover{translate:0 -3px; border-color:var(--ink)}
+.rule{height:1px; background:var(--hair); border:0}
+.tag{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:400; letter-spacing:.12em; text-transform:uppercase; padding:3px 8px; border:1px solid var(--hair); color:var(--stone); white-space:nowrap}
+.tag.post{border-color:var(--olive); color:var(--olive)}
+.tag.web{border-color:var(--ink); color:var(--ink)}
+.tag.gen{border-style:dashed; color:var(--garnet); border-color:var(--garnet)}
+.pill-gold{background:var(--gold-soft); color:var(--ink)}
+
+/* forms: underline inputs like the reference site */
+.field{display:flex; flex-direction:column; gap:6px}
+.field label{font-size:12px; font-weight:400; letter-spacing:.14em; text-transform:uppercase; color:var(--stone)}
+.inp{font:inherit; font-size:17px; color:var(--ink); background:transparent; border:0; border-bottom:1px solid var(--hair); border-radius:0; padding:10px 0; outline:none; transition:border-color 200ms var(--ease); width:100%}
+.inp::placeholder{color:var(--stone); opacity:.75}
+.inp:focus{border-bottom-color:var(--olive)}
+textarea.inp{border:1px solid var(--hair); padding:14px; resize:none; line-height:1.7}
+textarea.inp:focus{border-color:var(--olive)}
+.choice{display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 20px; border:1px solid var(--hair); background:var(--paper); color:var(--ink); font:inherit; font-size:15px; font-weight:400; cursor:pointer; transition-property:border-color,background-color,color,scale; transition-duration:150ms; transition-timing-function:ease-out}
+.choice:hover{border-color:var(--ink)}
+.choice:active{scale:.96}
+.choice.on{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+
+/* focus */
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--olive); outline-offset:3px}
+
+/* scores */
+.bar{height:2px; background:var(--hair); position:relative; overflow:hidden}
+.bar i{position:absolute; inset:0 auto 0 0; background:var(--olive); transform-origin:left; animation:grow 1100ms var(--ease) both}
+.bar.g i{background:var(--garnet)}
+@keyframes grow{from{transform:scaleX(0)}}
+.spark path{stroke-dasharray:240; stroke-dashoffset:240; animation:draw 1400ms var(--ease) 300ms forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* entrances: 100ms stagger, opacity + 4px blur + 12px rise, 300ms ease-out */
+.rise{animation:rise 300ms ease-out both}
+@keyframes rise{from{opacity:0; filter:blur(4px); transform:translateY(12px)}}
+.d1{animation-delay:100ms}.d2{animation-delay:200ms}.d3{animation-delay:300ms}.d4{animation-delay:400ms}.d5{animation-delay:500ms}.d6{animation-delay:600ms}.d7{animation-delay:700ms}.d8{animation-delay:800ms}
+.fade{animation:fade 600ms ease-out both}
+@keyframes fade{from{opacity:0}}
+
+/* live voice */
+.dot{width:9px; height:9px; border-radius:50%; background:var(--olive); display:inline-block; position:relative}
+.dot.live{animation:breathe 1600ms ease-in-out infinite}
+.dot.live::after{content:""; position:absolute; inset:-5px; border-radius:50%; border:1px solid var(--olive); animation:ping 1600ms ease-out infinite}
+@keyframes breathe{50%{opacity:.55}}
+@keyframes ping{from{opacity:.7; transform:scale(.6)} to{opacity:0; transform:scale(1.8)}}
+.w{opacity:0; animation:word 280ms ease-out forwards}
+@keyframes word{from{opacity:0; filter:blur(3px)} to{opacity:1; filter:blur(0)}}
+.w.interim{color:var(--stone)}
+.caret{display:inline-block; width:2px; height:1.05em; background:var(--olive); vertical-align:-0.15em; margin-left:2px; animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.lvl{display:flex; align-items:center; gap:3px; height:36px}
+.lvl i{display:block; width:3px; height:100%; background:var(--olive); transform-origin:center; animation:lvl 900ms ease-in-out infinite alternate}
+@keyframes lvl{from{transform:scaleY(.12)} to{transform:scaleY(1)}}
+.qin{animation:qin 700ms var(--ease) both}
+@keyframes qin{from{opacity:0; filter:blur(6px); letter-spacing:.01em}}
+
+/* progress + steps */
+.prog{height:2px; background:var(--hair); overflow:hidden}
+.prog i{display:block; height:100%; background:var(--olive); width:100%; transform-origin:left; animation:fill 7s var(--ease) infinite}
+@keyframes fill{0%{transform:scaleX(0)} 85%,100%{transform:scaleX(1)}}
+.step{display:flex; align-items:center; gap:14px; opacity:.35; animation:stepOn 400ms ease-out forwards}
+@keyframes stepOn{to{opacity:1}}
+.tick{width:18px; height:18px; flex:none}
+.tick path{stroke-dasharray:24; stroke-dashoffset:24; animation:draw 400ms var(--ease) forwards}
+.spin{width:14px; height:14px; border:1px solid var(--hair); border-top-color:var(--olive); border-radius:50%; animation:rot 900ms linear infinite; flex:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* marks on answers */
+.keep{background:linear-gradient(var(--gold),var(--gold)) 0 92%/100% 35% no-repeat}
+.cut{text-decoration:line-through; text-decoration-color:var(--garnet); color:var(--stone)}
+.tight{text-decoration:underline dotted var(--olive); text-underline-offset:4px}
+.ph{background:var(--gold-soft); color:var(--ink); padding:0 4px; font-weight:400}
+
+/* transcript threads */
+.who{font-size:11px; font-weight:400; letter-spacing:.16em; text-transform:uppercase; color:var(--stone)}
+.turn{padding:22px 0; border-top:1px solid var(--hair)}
+
+/* tool tiles */
+.tile{display:flex; flex-direction:column; justify-content:space-between; gap:28px; min-height:220px; padding:26px 24px; border:1px solid var(--hair); text-decoration:none; color:var(--stone); position:relative; background:var(--paper);
+  transition-property:border-color,background-color; transition-duration:200ms; transition-timing-function:var(--ease)}
+.tile::after{content:""; position:absolute; left:-1px; right:-1px; bottom:-1px; height:2px; background:var(--olive); transform:scaleX(0); transform-origin:left; transition:transform 300ms var(--ease)}
+.tile:hover{border-color:var(--ink); background:var(--ivory)}
+.tile:hover::after{transform:scaleX(1)}
+.tile .n{font-family:var(--font-serif); font-size:15px; color:var(--garnet); font-style:italic}
+.tile .go{transition:translate 200ms var(--ease); display:inline-block}
+.tile:hover .go{translate:5px 0}
+
+details summary{cursor:pointer; list-style:none}
+details summary::-webkit-details-marker{display:none}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:1ms!important; animation-delay:0ms!important; animation-iteration-count:1!important; transition-duration:1ms!important}
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* app additions */
+body{margin:0; min-height:100vh; background:var(--paper)}
+a{color:var(--ink)} a:hover{color:var(--olive)}
+.btn:disabled,.choice:disabled{opacity:.45; cursor:not-allowed}
+.btn:disabled:active{scale:1}
+.day{transition:border-color 150ms ease-out,background-color 150ms ease-out}
+.day:hover{border-color:var(--ink)}
+.err{color:var(--garnet); font-size:14px; font-weight:400}
+dialog{border:1px solid var(--hair); border-radius:2px; background:var(--paper); color:var(--stone); padding:32px; max-width:min(520px,calc(100vw - 32px))}
+dialog::backdrop{background:rgb(42 40 38 / .45)}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%)}
+@media (max-width:640px){ .wrap{padding:0 16px} .btn{padding:0 28px} }

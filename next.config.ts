@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
+// Cache Components is off: every signed-in screen reads the session cookie, so nothing is prerendered.
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
   turbopack: {
     rules: {
       "*.css": {
