@@ -8,7 +8,7 @@ import { activeRound, roundReadiness, weakestSkill } from "@/lib/coach";
 
 /** Model for every AI call, through OpenRouter. Reads OPENROUTER_API_KEY. */
 export const openrouter = createOpenRouter();
-export const MODEL = openrouter("anthropic/claude-sonnet-5.5");
+export const MODEL = openrouter("anthropic/claude-haiku-5.5");
 
 export const json = (body: unknown, status = 200) => Response.json(body, { status });
 /** 502 with a message the UI can show next to a retry button. */

@@ -4,15 +4,15 @@
 
 - [ ] 1.0 `git init`, create a GitHub repo with `gh repo create` (ask the user public or private), push, and add collaborators with `gh api repos/{owner}/{repo}/collaborators/{username} -X PUT` once the user gives usernames; verify `gh api repos/{owner}/{repo}/collaborators` lists them (invites show as pending until accepted)
 - [x] 1.1 Scaffold Next.js (App Router, TypeScript, Tailwind, ESLint) non-interactively; verify `npm run dev` serves a page at localhost:3000
-- [ ] 1.2 `vercel link`, add Supabase via `vercel integration add` (slug from `vercel integration discover`), add `OPENROUTER_API_KEY` to Vercel, `vercel env pull`; verify `.env.local` has the Supabase URL, anon key, service-role key, and the OpenRouter key (names only, never printed values)
-- [ ] 1.3 Install `ai`, `zod`, `@supabase/supabase-js`, `@supabase/ssr`, `@openrouter/ai-sdk-provider`; read `node_modules/ai/docs/` for structured output and streaming; verify `scripts/model-check.ts` returns a search result through OpenRouter
+- [x] 1.2 `vercel link`, add Supabase via `vercel integration add` (slug from `vercel integration discover`), add `OPENROUTER_API_KEY` to Vercel, `vercel env pull`; verify `.env.local` has the Supabase URL, anon key, service-role key, and the OpenRouter key (names only, never printed values)
+- [x] 1.3 Install `ai`, `zod`, `@supabase/supabase-js`, `@supabase/ssr`, `@openrouter/ai-sdk-provider`; read `node_modules/ai/docs/` for structured output and streaming; verify `scripts/model-check.ts` returns a search result through OpenRouter
 - [ ] 1.4 Copy the pitch video to `public/pitch.mp4` and generate `public/pitch.vtt` with Whisper; verify it plays with captions
 
 ## 2. Database
 
-- [ ] 2.1 Write SQL migrations for all tables in design.md decision 2 with foreign keys and `on delete cascade`; verify `supabase db push` (or migration apply) succeeds on the linked project
-- [ ] 2.2 Enable RLS with owner policies on every table, insert-only anon policy on `leads`, and the private `resumes` bucket with an owner-folder policy; verify `scripts/rls-check.ts` passes (user B cannot read A's job, anon cannot read leads)
-- [ ] 2.3 Generate TypeScript types from the schema into `lib/database.types.ts`; verify the project type-checks
+- [x] 2.1 Write SQL migrations for all tables in design.md decision 2 with foreign keys and `on delete cascade`; verify `supabase db push` (or migration apply) succeeds on the linked project
+- [x] 2.2 Enable RLS with owner policies on every table, insert-only anon policy on `leads`, and the private `resumes` bucket with an owner-folder policy; verify `scripts/rls-check.ts` passes (user B cannot read A's job, anon cannot read leads)
+- [x] 2.3 Generate TypeScript types from the schema into `lib/database.types.ts`; verify the project type-checks
 
 ## 3. Visual system
 

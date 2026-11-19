@@ -7,7 +7,7 @@ Interview practice built around the job and each round. Class prototype.
 
 ## Stack
 
-Next.js 16 (App Router) on Vercel · Supabase (Postgres, magic-link Auth, private Storage) through the Vercel Marketplace · AI SDK 7 through OpenRouter (`anthropic/claude-sonnet-5.5`, key in `OPENROUTER_API_KEY`) · Web Speech API for voice.
+Next.js 16 (App Router) on Vercel · Supabase (Postgres, magic-link Auth, private Storage) through the Vercel Marketplace · AI SDK 7 through OpenRouter (`anthropic/claude-haiku-5.5`, key in `OPENROUTER_API_KEY`) · Web Speech API for voice.
 
 ## Run it
 
