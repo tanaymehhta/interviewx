@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>InterviewX · Single questions</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ix.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&amp;family=Open+Sans:wght@300;400&amp;display=swap">
+<style>body{margin:0}a{color:#2A2826}a:hover{color:#383E28}
+.sug{transition:border-color 150ms ease-out,background-color 150ms ease-out,scale 150ms ease-out}.sug:hover{border-color:#2A2826;background:#F8F5EE}.sug:active{scale:.96}
+.dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:#696866;margin-right:4px;animation:bob 1s ease-in-out infinite}.dots span:nth-child(2){animation-delay:150ms}.dots span:nth-child(3){animation-delay:300ms}
+@keyframes bob{50%{transform:translateY(-4px);opacity:.5}}
+.mic{transition:background-color 150ms ease-out,scale 150ms ease-out}.mic:active{scale:.96}
+</style>
+</helmet>
+<div class="ix" data-theme="light">
+  <div class="wrap" style="max-width: 920px">
+    <header class="topbar">
+      <a class="mark" href="Main.dc.html">Interview<i>X</i></a>
+      <nav aria-label="App" style="display: flex; gap: 28px; flex: 1">
+        <a class="nav on" href="MyJobs.dc.html">My Jobs</a>
+        <a class="nav" href="Chat.dc.html">Chat</a>
+      </nav>
+      <button class="switcher" type="button">Salesforce · Final panel <span aria-hidden="true">⌄</span></button>
+    </header>
+
+    <section style="padding: 40px 0 24px; display: flex; flex-direction: column; gap: 10px">
+      <a class="tlink rise" href="Round.dc.html" style="align-self: flex-start; font-size: 14px">← Final panel</a>
+      <h1 class="serif rise d1" style="font-size: 56px; line-height: 1.02">Single <span class="ital">questions</span></h1>
+      <p class="rise d2">Ask for a question in your own words, answer it, and get scored. Your answers count toward your scorecard.</p>
+    </section>
+
+    <section class="rise d3" style="display: flex; gap: 10px; flex-wrap: wrap; padding-bottom: 28px">
+      <sc-for list="{{sugs}}" as="s" hint-placeholder-count="4">
+        <button class="sug" type="button" onClick="{{s.pick}}" style="border: 1px solid var(--hair); background: var(--paper); padding: 10px 16px; font: inherit; font-size: 14px; color: var(--ink); cursor: pointer; text-align: left">{{s.t}}</button>
+      </sc-for>
+    </section>
+
+    <section style="display: flex; flex-direction: column">
+      <div class="turn rise d3"><p class="who">You</p><p class="ink">Let me practice “tell me about yourself” for this round.</p></div>
+      <div class="turn rise d4">
+        <p class="who">InterviewX</p>
+        <div class="card" style="margin-top: 10px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap"><span class="tag">Behavioral</span><span class="tag">Standard</span></div>
+          <p class="serif" style="font-size: 30px; line-height: 1.2">Tell me about yourself, and why this role is the next step.</p>
+          <p style="font-size: 14px">Why this question: the final panel opens with it, and your storytelling score is your lowest for this round (48).</p>
+        </div>
+      </div>
+      <div class="turn rise d5"><p class="who">You · spoken · 1:48</p><p class="ink">I’m an MBA candidate at Rice. Before that I spent four years selling mid-market software at Northwind, where I ran a pipeline of about forty accounts…</p></div>
+      <div class="turn rise d6">
+        <p class="who">InterviewX · feedback</p>
+        <div class="card" style="margin-top: 10px; padding: 24px; display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; gap: 32px; align-items: end; flex-wrap: wrap">
+            <div><span class="serif num" style="font-size: 64px; line-height: 1">7.0</span><span style="font-size: 14px"> / 10</span></div>
+            <div style="flex: 1; display: grid; grid-template-columns: repeat(4, minmax(70px, 1fr)); gap: 14px">
+              <div><p style="font-size: 12px">Structure</p><div class="bar"><i style="width: 80%"></i></div></div>
+              <div><p style="font-size: 12px">Relevance</p><div class="bar"><i style="width: 70%"></i></div></div>
+              <div><p style="font-size: 12px">Impact</p><div class="bar g"><i style="width: 50%"></i></div></div>
+              <div><p style="font-size: 12px">Delivery</p><div class="bar"><i style="width: 80%"></i></div></div>
+            </div>
+          </div>
+          <p class="ink" style="font-size: 15px">Keep the Northwind line. Cut the school history. Add one number: how much pipeline, or how much growth.</p>
+          <div class="card soft" style="padding: 18px"><span class="eyebrow">Upgraded opening</span><p class="ink" style="font-size: 15px; padding-top: 6px">“I spent four years growing a <span class="ph">[$X M]</span> mid-market book at Northwind, and I want to lead a team that does the same at Salesforce.”</p></div>
+          <p style="font-size: 13px">Scorecard updated · Storytelling 48 → 54</p>
+        </div>
+      </div>
+      <div class="turn rise d7"><p class="who">You</p><p class="ink">SWOT my Northwind renewal recovery story.</p></div>
+      <div class="turn rise d8">
+        <p class="who">InterviewX · story analysis · not scored</p>
+        <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--hair); border: 1px solid var(--hair)">
+          <div style="background: var(--paper); padding: 18px"><span class="eyebrow olive">S</span><p class="ink" style="font-size: 14px">Owns a real loss.</p></div>
+          <div style="background: var(--paper); padding: 18px"><span class="eyebrow garnet">W</span><p class="ink" style="font-size: 14px">No result number yet.</p></div>
+          <div style="background: var(--paper); padding: 18px"><span class="eyebrow">O</span><p class="ink" style="font-size: 14px">Fits their “coach with data” value.</p></div>
+          <div style="background: var(--paper); padding: 18px"><span class="eyebrow">T</span><p class="ink" style="font-size: 14px">Sounds old if you open with the date.</p></div>
+        </div>
+      </div>
+      <sc-for list="{{sent}}" as="m" hint-placeholder-count="0">
+        <div class="turn rise"><p class="who">You</p><p class="ink">{{m.t}}</p></div>
+        <div class="turn rise d2"><p class="who">InterviewX</p><span class="dots" aria-label="Writing"><span></span><span></span><span></span></span></div>
+      </sc-for>
+    </section>
+
+    <section style="position: sticky; bottom: 0; background: var(--paper); padding: 20px 0 40px; border-top: 1px solid var(--ink); display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; gap: 12px; align-items: end">
+        <button class="mic" type="button" onClick="{{rec}}" aria-label="Answer by voice" style="width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--ink); background: {{micBg}}; display: grid; place-items: center; cursor: pointer; flex: none">
+          <sc-if value="{{recording}}" hint-placeholder-val="{{false}}"><span class="lvl" style="height: 18px"><i style="animation-delay: 0ms; background: #fff"></i><i style="animation-delay: 150ms; background: #fff"></i><i style="animation-delay: 300ms; background: #fff"></i></span></sc-if>
+          <sc-if value="{{idle}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A2826" stroke-width="1.4" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0M12 18v3"></path></svg></sc-if>
+        </button>
+        <label for="sq-draft" style="position: absolute; left: -9999px">Your message</label>
+        <textarea id="sq-draft" class="inp" rows="2" value="{{draft}}" onChange="{{onDraft}}" placeholder="Ask for a question, or answer the last one" style="flex: 1"></textarea>
+        <button class="btn sm" type="button" onClick="{{send}}">Send</button>
+      </div>
+      <div style="display: flex; gap: 16px; font-size: 13px; align-items: center"><span>Your next message is scored as an answer.</span><button class="tlink" type="button" style="font-size: 13px">Mark as not an answer</button></div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { draft: '', rec: false, sent: [] }; }
+  renderVals() {
+    const s = this.state;
+    const list = ['Walk me through your 30-60-90 day plan', 'Why Salesforce over an internal candidate?', 'A deal went dark. What do you do?', 'Asked in your real round: “What is your coaching style?”'];
+    return {
+      sugs: list.map((t) => ({ t, pick: () => this.setState({ draft: 'Ask me: ' + t }) })),
+      draft: s.draft,
+      onDraft: (e) => this.setState({ draft: e.target.value }),
+      recording: s.rec, idle: !s.rec, micBg: s.rec ? '#383E28' : 'transparent',
+      rec: () => this.setState({ rec: !s.rec }),
+      sent: s.sent,
+      send: () => { if (!s.draft.trim()) return; this.setState({ sent: s.sent.concat([{ t: s.draft }]), draft: '' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>InterviewX · How did it go?</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ix.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&amp;family=Open+Sans:wght@300;400&amp;display=swap">
+<style>body{margin:0}a{color:#2A2826}a:hover{color:#383E28}</style>
+</helmet>
+<div class="ix" data-theme="light">
+  <div class="wrap" style="max-width: 960px">
+    <header class="topbar">
+      <a class="mark" href="Main.dc.html">Interview<i>X</i></a>
+      <nav aria-label="App" style="display: flex; gap: 28px; flex: 1">
+        <a class="nav on" href="MyJobs.dc.html">My Jobs</a>
+        <a class="nav" href="Chat.dc.html">Chat</a>
+      </nav>
+      <a class="nav" href="Settings.dc.html">Settings</a>
+    </header>
+
+    <sc-if value="{{editing}}" hint-placeholder-val="{{true}}">
+      <section style="padding: 56px 0 96px; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <p class="eyebrow rise">Friday 27 Nov · Salesforce · Final panel was yesterday</p>
+          <h1 class="serif rise d1" style="font-size: 68px; line-height: 1.02">How did it <span class="ital">go?</span></h1>
+          <p class="rise d2">Two minutes now helps us learn which practice leads to offers.</p>
+        </div>
+
+        <div class="rise d3" style="display: flex; flex-direction: column; gap: 14px">
+          <span class="eyebrow">Outcome</span>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <sc-for list="{{outs}}" as="o" hint-placeholder-count="4"><button class="choice {{o.on}}" type="button" onClick="{{o.pick}}">{{o.t}}</button></sc-for>
+          </div>
+        </div>
+
+        <div class="rise d4" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px">
+          <div class="field"><label for="ci-well">What went well</label><textarea class="inp" id="ci-well" rows="4" placeholder="The pipeline review question felt easy. They liked the Northwind story."></textarea></div>
+          <div class="field"><label for="ci-wrong">Where it went wrong</label><textarea class="inp" id="ci-wrong" rows="4" placeholder="My 30-60-90 plan had no numbers for month two."></textarea></div>
+        </div>
+
+        <div class="rise d5" style="display: flex; flex-direction: column">
+          <span class="eyebrow" style="padding-bottom: 12px">Questions they actually asked</span>
+          <div class="turn" style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center"><span class="ink">Walk me through a deal you lost.</span><a class="tlink" href="SingleQuestions.dc.html" style="font-size: 14px">Practice this</a></div>
+          <div class="turn" style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center"><span class="ink">What is your coaching style with a struggling rep?</span><a class="tlink" href="SingleQuestions.dc.html" style="font-size: 14px">Practice this</a></div>
+          <div class="turn" style="display: flex; gap: 12px; align-items: center"><label for="ci-q" style="position: absolute; left: -9999px">Add a question</label><input class="inp" id="ci-q" placeholder="Add another question" style="flex: 1"><button class="btn ghost sm" type="button">Add</button></div>
+        </div>
+
+        <div class="card soft rise d6" style="padding: 24px; display: flex; gap: 32px; flex-wrap: wrap; align-items: center">
+          <span class="eyebrow" style="flex: 1 1 200px">Saved with this round</span>
+          <span><span class="serif num" style="font-size: 32px">61</span> <span style="font-size: 13px">readiness</span></span>
+          <span><span class="serif num" style="font-size: 32px">34</span> <span style="font-size: 13px">practice answers</span></span>
+          <span><span class="serif num" style="font-size: 32px">3</span> <span style="font-size: 13px">full interviews</span></span>
+        </div>
+
+        <div class="rise d7"><button class="btn" type="button" onClick="{{save}}">Save <span class="arr">→</span></button></div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{saved}}" hint-placeholder-val="{{false}}">
+      <section style="padding: 120px 0; display: flex; flex-direction: column; gap: 24px; align-items: flex-start">
+        <svg class="rise" width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true"><circle cx="28" cy="28" r="27" stroke="#383E28"></circle><path class="spark" d="M17 29l7 7 15-16" stroke="#383E28" stroke-width="1.6"></path></svg>
+        <h1 class="serif rise d1" style="font-size: 64px; line-height: 1.02">{{doneTitle}}</h1>
+        <p class="rise d2" style="max-width: 560px">{{doneText}}</p>
+        <div class="rise d3" style="display: flex; gap: 16px; flex-wrap: wrap"><a class="btn" href="MyJobs.dc.html">Back to My Jobs <span class="arr">→</span></a><button class="tlink" type="button" onClick="{{edit}}">Edit answers</button></div>
+      </section>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1150}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { out: 'Offer', saved: false }; }
+  renderVals() {
+    const o = this.state.out;
+    const texts = {
+      'Waiting': ['Saved. We will ask again next week.', 'The job stays active. Keep practicing if you like; your plan continues.'],
+      'Offer': ['Congratulations.', 'Salesforce moves to Past jobs with status Offer. Your readiness of 61 and 34 practice answers are saved with it.'],
+      'Rejected': ['Saved. That one hurts.', 'Salesforce moves to Past jobs. Your notes and the questions they asked stay in your question bank.'],
+      'Withdrew': ['Saved.', 'Salesforce moves to Past jobs with status Withdrew.']
+    };
+    return {
+      editing: !this.state.saved, saved: this.state.saved,
+      outs: ['Waiting', 'Offer', 'Rejected', 'Withdrew'].map((t) => ({ t, on: t === o ? 'on' : '', pick: () => this.setState({ out: t }) })),
+      doneTitle: texts[o][0], doneText: texts[o][1],
+      save: () => this.setState({ saved: true }),
+      edit: () => this.setState({ saved: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

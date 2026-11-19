@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>InterviewX · Onboarding</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ix.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&amp;family=Open+Sans:wght@300;400&amp;display=swap">
+<style>body{margin:0}a{color:#2A2826}a:hover{color:#383E28}</style>
+</helmet>
+<div class="ix" data-theme="light">
+  <div class="wrap" style="max-width: 880px">
+    <header class="topbar" style="justify-content: space-between">
+      <a class="mark" href="Main.dc.html">Interview<i>X</i></a>
+      <span style="font-size: 14px">Step {{stepNo}} of 3</span>
+    </header>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding-top: 32px">
+      <div style="display: flex; flex-direction: column; gap: 10px"><div class="bar"><i style="width: 100%"></i></div><span class="eyebrow" style="color: var(--ink)">About you</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px"><div class="bar"><i style="width: {{w2}}"></i></div><span class="eyebrow">Resume</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px"><div class="bar"><i style="width: {{w3}}"></i></div><span class="eyebrow">What we found</span></div>
+    </div>
+
+    <sc-if value="{{s1}}" hint-placeholder-val="{{true}}">
+      <section style="padding: 72px 0 96px; display: flex; flex-direction: column; gap: 44px">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <h1 class="serif rise" style="font-size: 60px; line-height: 1.05">First, a little about <span class="ital">you.</span></h1>
+          <p class="rise d1">We use this to pitch every question at your level. You only do this once.</p>
+        </div>
+        <div class="rise d2" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 32px">
+          <div class="field"><label for="ob-name">Your name</label><input class="inp" id="ob-name" placeholder="Tanay Mehta"></div>
+          <div class="field"><label for="ob-prog">Program or current role</label><input class="inp" id="ob-prog" placeholder="MBA, class of 2027"></div>
+        </div>
+        <div class="field rise d3"><label for="ob-roles">Roles you are aiming for</label><input class="inp" id="ob-roles" placeholder="Sales manager, strategy associate, deployment strategist"></div>
+        <div class="rise d4"><button class="btn" type="button" onClick="{{next}}">Continue <span class="arr">→</span></button></div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{s2}}" hint-placeholder-val="{{false}}">
+      <section style="padding: 72px 0 96px; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <h1 class="serif rise" style="font-size: 60px; line-height: 1.05">Your resume holds your best <span class="ital">stories.</span></h1>
+          <p class="rise d1">Upload a PDF up to 3 MB, or paste the text. Only you can see it.</p>
+        </div>
+        <button class="rise d2 lift" type="button" onClick="{{upload}}" style="all: unset; cursor: pointer; border: 1px dashed var(--ink); padding: 56px 32px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; background: var(--ivory)">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2A2826" stroke-width="1.2" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"></path></svg>
+          <span class="serif" style="font-size: 26px">{{dropLabel}}</span>
+          <span style="font-size: 14px">{{dropSub}}</span>
+          <sc-if value="{{uploading}}" hint-placeholder-val="{{false}}"><div class="prog" style="width: 260px"><i style="animation: fill 1.6s var(--ease) both"></i></div></sc-if>
+        </button>
+        <div class="rise d3" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap">
+          <button class="btn" type="button" onClick="{{next}}">Read my resume <span class="arr">→</span></button>
+          <button class="tlink" type="button">Paste text instead</button>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{s3}}" hint-placeholder-val="{{false}}">
+      <section style="padding: 72px 0 96px; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <h1 class="serif rise" style="font-size: 60px; line-height: 1.05">Here is what we <span class="ital">found.</span></h1>
+          <p class="rise d1">Rename any story. Questions and feedback will use these names.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
+          <div class="card rise d2" style="padding: 28px; display: flex; flex-direction: column; gap: 12px">
+            <span class="eyebrow olive">Strengths</span>
+            <p class="ink">Quota-carrying sales record</p><p class="ink">Cross-team project lead</p><p class="ink">Clear written English</p>
+          </div>
+          <div class="card rise d3" style="padding: 28px; display: flex; flex-direction: column; gap: 12px">
+            <span class="eyebrow garnet">Gaps for your target roles</span>
+            <p class="ink">Few numbers on outcomes</p><p class="ink">No people-management example</p><p class="ink">Strategy work is implied, not shown</p>
+          </div>
+        </div>
+        <div class="rise d4" style="display: flex; flex-direction: column">
+          <span class="eyebrow" style="padding-bottom: 12px">Stories worth preparing</span>
+          <div class="turn" style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap"><span class="serif" style="font-size: 24px">Northwind renewal recovery</span><button class="tlink" type="button">Rename</button></div>
+          <div class="turn" style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap"><span class="serif" style="font-size: 24px">Pricing pilot with finance</span><button class="tlink" type="button">Rename</button></div>
+          <div class="turn" style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap"><span class="serif" style="font-size: 24px">Onboarding three new reps</span><button class="tlink" type="button">Rename</button></div>
+        </div>
+        <div class="rise d5"><a class="btn" href="MyJobs.dc.html">Go to My Jobs <span class="arr">→</span></a></div>
+      </section>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1250}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { step: 1, up: 0 }; }
+  renderVals() {
+    const s = this.state.step, up = this.state.up;
+    return {
+      stepNo: s, s1: s === 1, s2: s === 2, s3: s === 3,
+      w2: s >= 2 ? '100%' : '0%', w3: s >= 3 ? '100%' : '0%',
+      uploading: up === 1,
+      dropLabel: up === 0 ? 'Drop your resume here' : (up === 1 ? 'Uploading tanay-mehta-resume.pdf' : 'tanay-mehta-resume.pdf'),
+      dropSub: up === 2 ? '2 pages · 184 KB · ready' : 'PDF up to 3 MB, or click to choose',
+      upload: () => { this.setState({ up: 1 }); setTimeout(() => this.setState({ up: 2 }), 1600); },
+      next: () => this.setState({ step: Math.min(3, s + 1) })
+    };
+  }
+}
+</script>
+</body>
+</html>

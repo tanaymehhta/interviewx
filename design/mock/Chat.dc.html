@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>InterviewX · Chat</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ix.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&amp;family=Open+Sans:wght@300;400&amp;display=swap">
+<style>body{margin:0}a{color:#2A2826}a:hover{color:#383E28}.hist{transition:background-color 150ms ease-out}.hist:hover{background:#F8F5EE}.late{animation:rise 300ms ease-out both}</style>
+</helmet>
+<div class="ix" data-theme="light">
+  <div class="wrap">
+    <header class="topbar">
+      <a class="mark" href="Main.dc.html">Interview<i>X</i></a>
+      <nav aria-label="App" style="display: flex; gap: 28px; flex: 1">
+        <a class="nav" href="MyJobs.dc.html">My Jobs</a>
+        <a class="nav on" href="Chat.dc.html">Chat</a>
+      </nav>
+      <button class="switcher" type="button">Salesforce · Final panel <span aria-hidden="true">⌄</span></button>
+      <a class="nav" href="Settings.dc.html">Settings</a>
+    </header>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 48px; padding: 40px 0 72px">
+      <aside class="rise" style="flex: 1 1 220px; max-width: 280px; display: flex; flex-direction: column; gap: 6px">
+        <button class="btn ghost sm" type="button" style="margin-bottom: 18px">New chat</button>
+        <span class="eyebrow" style="padding: 8px 0">Today</span>
+        <a class="hist" href="Chat.dc.html" style="padding: 10px 12px; text-decoration: none; color: var(--ink); background: var(--ivory); font-size: 15px">What to fix before Thursday</a>
+        <span class="eyebrow" style="padding: 16px 0 8px">Yesterday</span>
+        <a class="hist" href="Chat.dc.html" style="padding: 10px 12px; text-decoration: none; color: var(--stone); font-size: 15px">Salary range for the role</a>
+        <a class="hist" href="Chat.dc.html" style="padding: 10px 12px; text-decoration: none; color: var(--stone); font-size: 15px">Google vs Salesforce timing</a>
+        <span class="eyebrow" style="padding: 16px 0 8px">Earlier</span>
+        <a class="hist" href="Chat.dc.html" style="padding: 10px 12px; text-decoration: none; color: var(--stone); font-size: 15px">Questions to ask the VP</a>
+      </aside>
+
+      <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+        <div class="rise d1" style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding-bottom: 18px">
+          <h1 class="serif" style="font-size: 44px; line-height: 1.05">Chat</h1>
+          <span style="font-size: 13px">Knows your resume, 2 jobs, research, scores and past answers · never scored</span>
+        </div>
+        <div class="turn rise d2"><p class="who">You</p><p class="ink" style="font-size: 17px">What should I fix before Thursday?</p></div>
+        <div class="turn rise d3">
+          <p class="who">InterviewX</p>
+          <p class="ink" style="font-size: 17px; line-height: 1.85; min-height: 150px">{{shown}}<sc-if value="{{streaming}}" hint-placeholder-val="{{false}}"><span class="caret"></span></sc-if></p>
+          <sc-if value="{{doneStreaming}}" hint-placeholder-val="{{true}}">
+            <div class="late" style="display: flex; gap: 10px; flex-wrap: wrap; padding-top: 14px">
+              <a class="btn sm" href="SingleQuestions.dc.html">Practice the 30-60-90 answer <span class="arr">→</span></a>
+              <a class="btn ghost sm" href="InterviewSetup.dc.html">Start a 15-minute full interview</a>
+              <a class="btn ghost sm" href="Scorecard.dc.html">Open scorecard</a>
+            </div>
+          </sc-if>
+        </div>
+        <div style="border-top: 1px solid var(--ink); padding-top: 18px; margin-top: 24px; display: flex; gap: 12px; align-items: end">
+          <label for="chat-in" style="position: absolute; left: -9999px">Message</label>
+          <textarea id="chat-in" class="inp" rows="2" placeholder="Ask anything about your jobs, rounds or answers" style="flex: 1"></textarea>
+          <button class="btn sm" type="button">Send</button>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1050}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.full = 'Three things, in this order. First, the final panel expects a 30-60-90 day plan and you have never practiced one; your last attempt in Single questions scored 5.0. Second, Executive communication is now your weakest skill at 55: your answers open with background, so lead with the number. Third, quantified impact is 44 across all jobs. Your Northwind story still has no result figure; confirm your renewal win rate before Thursday.';
+    this.words = this.full.split(' ');
+    this.state = { n: 0 };
+  }
+  componentDidMount() {
+    this.iv = setInterval(() => {
+      if (this.state.n >= this.words.length) { clearInterval(this.iv); return; }
+      this.setState({ n: Math.min(this.words.length, this.state.n + 2) });
+    }, 70);
+  }
+  componentWillUnmount() { clearInterval(this.iv); }
+  renderVals() {
+    const n = this.state.n, done = n >= this.words.length;
+    return { shown: this.words.slice(0, n).join(' '), streaming: !done, doneStreaming: done };
+  }
+}
+</script>
+</body>
+</html>

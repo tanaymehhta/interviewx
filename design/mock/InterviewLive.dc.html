@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>InterviewX · Full interview live</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ix.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&amp;family=Open+Sans:wght@300;400&amp;display=swap">
+<style>body{margin:0}a{color:#2A2826}a:hover{color:#383E28}.qw{animation:word 240ms ease-out both}.settled{color:#2A2826}.interim{color:#9A968F}.pd{width:8px;height:8px;border-radius:50%;border:1px solid #2A2826;transition:background-color 300ms ease-out}.pd.on{background:#2A2826}</style>
+</helmet>
+<div class="ix" data-theme="light" style="background: var(--ivory)">
+  <div class="wrap">
+    <header style="display: flex; align-items: center; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--hair); flex-wrap: wrap">
+      <span class="mark" style="font-size: 24px">Interview<i>X</i></span>
+      <span style="flex: 1; font-size: 15px" class="ink">Salesforce · Final panel</span>
+      <span class="num ink" style="font-size: 15px">{{total}} / 30:00</span>
+      <a class="nav" href="InterviewReview.dc.html">End interview</a>
+    </header>
+
+    <section style="padding: 56px 0 24px; display: flex; flex-direction: column; gap: 28px; min-height: 340px">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap">
+        <span class="eyebrow" style="color: var(--garnet)">{{qLabel}}</span>
+        <div style="display: flex; gap: 8px" aria-label="Question 3 of 6">
+          <span class="pd on"></span><span class="pd on"></span><span class="pd on"></span><span class="pd"></span><span class="pd"></span><span class="pd"></span>
+        </div>
+      </div>
+      <h1 class="serif" style="font-size: clamp(36px, 4.4vw, 54px); line-height: 1.12; max-width: 1000px; min-height: 130px">
+        <sc-for list="{{qWords}}" as="w" hint-placeholder-count="8"><span class="qw">{{w.t}} </span></sc-for>
+      </h1>
+      <div style="display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 400" class="ink">
+        <sc-if value="{{listening}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; gap: 12px"><span class="dot live"></span> Listening</span></sc-if>
+        <sc-if value="{{speaking}}" hint-placeholder-val="{{true}}"><span style="display: inline-flex; align-items: center; gap: 12px"><span class="lvl" style="height: 16px"><i style="animation-delay: 0ms"></i><i style="animation-delay: 150ms"></i><i style="animation-delay: 300ms"></i><i style="animation-delay: 80ms"></i></span> Interviewer speaking · microphone off</span></sc-if>
+        <sc-if value="{{paused}}" hint-placeholder-val="{{false}}"><span>Paused</span></sc-if>
+        <span style="flex: 1"></span>
+        <span class="num" style="color: {{ansColor}}">Answer {{ans}} / 2:00</span>
+      </div>
+    </section>
+
+    <section style="border-top: 1px solid var(--hair); padding: 28px 0; display: flex; flex-direction: column; gap: 14px; min-height: 220px">
+      <span class="eyebrow">Your answer</span>
+      <sc-if value="{{voice}}" hint-placeholder-val="{{true}}">
+        <p style="font-size: 21px; line-height: 1.7; max-width: 1000px">
+          <sc-for list="{{aWords}}" as="w" hint-placeholder-count="10"><span class="qw {{w.c}}">{{w.t}} </span></sc-for><sc-if value="{{listening}}" hint-placeholder-val="{{false}}"><span class="caret"></span></sc-if>
+        </p>
+      </sc-if>
+      <sc-if value="{{typing}}" hint-placeholder-val="{{false}}">
+        <label for="live-type" class="eyebrow" style="position: absolute; left: -9999px">Type your answer</label>
+        <textarea id="live-type" class="inp fade" rows="5" style="font-size: 19px; background: var(--paper)" placeholder="{{typedSoFar}}"></textarea>
+      </sc-if>
+    </section>
+
+    <section style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding: 8px 0 28px">
+      <button class="btn ghost sm" type="button" onClick="{{pause}}">{{pauseLabel}}</button>
+      <button class="btn ghost sm" type="button" onClick="{{toggleType}}">{{typeLabel}}</button>
+      <span style="flex: 1"></span>
+      <sc-if value="{{canDone}}" hint-placeholder-val="{{true}}"><button class="btn" type="button" onClick="{{done}}">Done <span style="font-size: 13px; opacity: .7; font-family: 'Open Sans'">· Space</span></button></sc-if>
+      <sc-if value="{{finished}}" hint-placeholder-val="{{false}}"><a class="btn" href="InterviewReview.dc.html">Done · skip to review <span class="arr">→</span></a></sc-if>
+    </section>
+
+    <details style="border-top: 1px solid var(--hair); padding: 18px 0 64px">
+      <summary class="ink" style="font-size: 15px; font-weight: 400">Transcript · questions 1–2</summary>
+      <div style="display: flex; flex-direction: column; padding-top: 10px">
+        <div class="turn"><p class="who">Interviewer</p><p class="ink">Why Salesforce, and why this team?</p><p class="who" style="padding-top: 10px">You</p><p>I have sold against Salesforce for three years, and the reason we lost was always the same: customers trusted the platform…</p></div>
+        <div class="turn"><p class="who">Interviewer</p><p class="ink">Tell me about your biggest quota miss.</p><p class="who" style="padding-top: 10px">You</p><p>Q3 last year we finished at 82 percent of target…</p></div>
+      </div>
+    </details>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.Q = [
+      { label: 'Question 3 of 6 · Behavioral', text: 'Tell me about a deal you lost. What did you change afterwards?',
+        ans: 'In my second year at Northwind I ran the mid-market pipeline and we lost a four hundred thousand dollar renewal to a competitor. Looking back we never confirmed who signed off on budget, so I rebuilt our qualification checklist around the economic buyer and made it part of every deal review' },
+      { label: 'Question 3 of 6 · Follow-up', text: 'What happened to your win rate after you made that change?',
+        ans: 'Over the next two quarters our win rate on renewals went from about sixty to seventy eight percent, and the team adopted the checklist across all regions' }
+    ];
+    this.state = { qi: 0, qn: 0, an: 0, phase: 'speaking', paused: false, typing: false, total: 732, ans: 0 };
+  }
+  componentDidMount() {
+    this.iv = setInterval(() => {
+      const s = this.state;
+      if (s.paused) return;
+      const q = this.Q[s.qi], qLen = q.text.split(' ').length, aLen = q.ans.split(' ').length;
+      const next = { total: s.total + 0.25 };
+      if (s.phase === 'speaking') {
+        if (s.qn < qLen) next.qn = s.qn + 1; else next.phase = 'listening';
+      } else if (s.phase === 'listening') {
+        next.ans = s.ans + 0.25;
+        if (s.an < aLen) next.an = s.an + 1;
+      }
+      this.setState(next);
+    }, 250);
+  }
+  componentWillUnmount() { clearInterval(this.iv); }
+  fmt(sec) { const t = Math.floor(sec); return String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); }
+  renderVals() {
+    const s = this.state, q = this.Q[s.qi];
+    const qw = q.text.split(' ').slice(0, s.qn).map((t) => ({ t }));
+    const aAll = q.ans.split(' ').slice(0, s.an);
+    const aw = aAll.map((t, i) => ({ t, c: i >= aAll.length - 2 && s.phase === 'listening' && s.an < q.ans.split(' ').length ? 'interim' : 'settled' }));
+    return {
+      qLabel: q.label, qWords: qw, aWords: aw,
+      speaking: s.phase === 'speaking' && !s.paused,
+      listening: s.phase === 'listening' && !s.paused,
+      paused: s.paused,
+      voice: !s.typing, typing: s.typing, typedSoFar: aAll.join(' '),
+      total: this.fmt(s.total), ans: this.fmt(s.ans), ansColor: s.ans > 120 ? '#7B2B24' : 'inherit',
+      pauseLabel: s.paused ? 'Resume' : 'Pause',
+      typeLabel: s.typing ? 'Speak instead' : 'Type instead',
+      canDone: !(s.qi === 1 && s.phase === 'listening' && s.an >= q.ans.split(' ').length),
+      finished: s.qi === 1 && s.phase === 'listening' && s.an >= q.ans.split(' ').length,
+      pause: () => this.setState({ paused: !s.paused }),
+      toggleType: () => this.setState({ typing: !s.typing }),
+      done: () => { if (s.qi === 0) this.setState({ qi: 1, qn: 0, an: 0, ans: 0, phase: 'speaking' }); else this.setState({ an: q.ans.split(' ').length }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

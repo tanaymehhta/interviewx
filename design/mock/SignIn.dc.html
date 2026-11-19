@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>InterviewX · Sign in</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ix.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&amp;family=Open+Sans:wght@300;400&amp;display=swap">
+<style>body{margin:0}a{color:#2A2826}a:hover{color:#383E28}</style>
+</helmet>
+<div class="ix" data-theme="light" style="display: flex; flex-wrap: wrap; min-height: 900px">
+  <aside style="flex: 1 1 520px; background: var(--ivory); padding: 48px 64px; display: flex; flex-direction: column; justify-content: space-between; gap: 48px">
+    <a class="mark rise" href="Main.dc.html">Interview<i>X</i></a>
+    <div style="display: flex; flex-direction: column; gap: 24px; max-width: 520px">
+      <p class="eyebrow rise d1">Before you begin</p>
+      <p class="serif rise d2" style="font-size: 58px; line-height: 1.05">Your next interview, <span class="ital">rehearsed</span> until it feels familiar.</p>
+    </div>
+    <p class="rise d3" style="font-size: 14px">No password. We send you a one-time link.</p>
+  </aside>
+  <main style="flex: 1 1 520px; padding: 48px 64px; display: flex; align-items: center; justify-content: center">
+    <div style="width: 100%; max-width: 420px">
+      <sc-if value="{{form}}" hint-placeholder-val="{{true}}">
+        <form onSubmit="{{send}}" style="display: flex; flex-direction: column; gap: 36px">
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <h1 class="serif rise d2" style="font-size: 48px; line-height: 1.05">Sign in or create an account</h1>
+            <p class="rise d3">Enter your email. New here? The same link creates your account.</p>
+          </div>
+          <div class="field rise d4"><label for="si-email">Email</label><input class="inp" id="si-email" type="email" placeholder="you@rice.edu"></div>
+          <div class="rise d5" style="display: flex; flex-direction: column; gap: 16px">
+            <button class="btn" type="submit" style="width: 100%">Send me a sign-in link <span class="arr">→</span></button>
+            <p style="font-size: 13px; text-align: center">By continuing you agree to the terms and privacy notice.</p>
+          </div>
+        </form>
+      </sc-if>
+      <sc-if value="{{sent}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; gap: 28px">
+          <svg class="rise" width="64" height="48" viewBox="0 0 64 48" aria-hidden="true" style="overflow: visible">
+            <rect x="1" y="1" width="62" height="46" fill="none" stroke="#2A2826" stroke-width="1"></rect>
+            <path class="spark" d="M1 1 L32 26 L63 1" fill="none" stroke="#383E28" stroke-width="1.2"></path>
+          </svg>
+          <h1 class="serif rise d1" style="font-size: 48px; line-height: 1.05">Check your email</h1>
+          <p class="rise d2">We sent a link to <span class="ink" style="font-weight: 400">you@rice.edu</span>. It works once and expires in one hour.</p>
+          <div class="rise d3" style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center">
+            <a class="btn" href="Onboarding.dc.html">Open link (prototype) <span class="arr">→</span></a>
+            <button class="tlink" type="button" onClick="{{back}}">Use another email</button>
+          </div>
+          <p class="rise d4" style="font-size: 13px">Nothing arrived? Check spam, or send again in 30 seconds.</p>
+        </div>
+      </sc-if>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { sent: false }; }
+  renderVals() {
+    return {
+      sent: this.state.sent,
+      form: !this.state.sent,
+      send: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+      back: () => this.setState({ sent: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

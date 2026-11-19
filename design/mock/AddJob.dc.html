@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>InterviewX · Add a job</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ix.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&amp;family=Open+Sans:wght@300;400&amp;display=swap">
+<style>body{margin:0}a{color:#2A2826}a:hover{color:#383E28}</style>
+</helmet>
+<div class="ix" data-theme="light">
+  <div class="wrap" style="max-width: 960px">
+    <header class="topbar">
+      <a class="mark" href="Main.dc.html">Interview<i>X</i></a>
+      <nav aria-label="App" style="display: flex; gap: 28px; flex: 1">
+        <a class="nav on" href="MyJobs.dc.html">My Jobs</a>
+        <a class="nav" href="Chat.dc.html">Chat</a>
+      </nav>
+      <a class="nav" href="Settings.dc.html">Settings</a>
+    </header>
+
+    <sc-if value="{{idle}}" hint-placeholder-val="{{true}}">
+      <section style="padding: 72px 0 96px; display: flex; flex-direction: column; gap: 40px">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <a class="tlink rise" href="MyJobs.dc.html" style="align-self: flex-start; font-size: 14px">← My Jobs</a>
+          <h1 class="serif rise d1" style="font-size: 64px; line-height: 1.02">Which job are you <span class="ital">preparing</span> for?</h1>
+          <p class="rise d2">Give us a link or a name. We will find the rounds, what each one asks, and what the company wants.</p>
+        </div>
+        <div class="rise d3" role="tablist" aria-label="How to add the job" style="display: flex; gap: 8px; flex-wrap: wrap">
+          <button class="choice {{c1}}" type="button" role="tab" onClick="{{m1}}">Paste a link</button>
+          <button class="choice {{c2}}" type="button" role="tab" onClick="{{m2}}">Company and role</button>
+          <button class="choice {{c3}}" type="button" role="tab" onClick="{{m3}}">Paste the posting text</button>
+        </div>
+        <sc-if value="{{isLink}}" hint-placeholder-val="{{true}}">
+          <div class="field fade"><label for="aj-link">Job posting link</label><input class="inp" id="aj-link" placeholder="https://careers.salesforce.com/en/jobs/…" style="font-size: 20px"></div>
+        </sc-if>
+        <sc-if value="{{isPick}}" hint-placeholder-val="{{false}}">
+          <div class="fade" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px">
+            <div class="field"><label for="aj-co">Company</label><input class="inp" id="aj-co" placeholder="Salesforce" style="font-size: 20px"></div>
+            <div class="field"><label for="aj-role">Role title</label><input class="inp" id="aj-role" placeholder="Sales Manager" style="font-size: 20px"></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{isText}}" hint-placeholder-val="{{false}}">
+          <div class="field fade"><label for="aj-text">Posting text</label><textarea class="inp" id="aj-text" rows="7" placeholder="Paste the full job description here."></textarea></div>
+        </sc-if>
+        <div class="rise d4" style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap">
+          <button class="btn" type="button" onClick="{{start}}">Research this job <span class="arr">→</span></button>
+          <span style="font-size: 14px">Takes about a minute.</span>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{busy}}" hint-placeholder-val="{{false}}">
+      <section style="padding: 72px 0 96px; display: flex; flex-direction: column; gap: 44px">
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <p class="eyebrow rise">Salesforce · Sales Manager</p>
+          <h1 class="serif rise d1" style="font-size: 64px; line-height: 1.02">Researching the <span class="ital">rounds.</span></h1>
+        </div>
+        <div class="prog rise d2"><i></i></div>
+        <div style="display: flex; flex-direction: column; gap: 22px; font-size: 18px">
+          <div class="step" style="animation-delay: 300ms"><svg class="tick" viewBox="0 0 18 18" fill="none" stroke="#383E28" stroke-width="1.4" aria-hidden="true"><path d="M3 9.5l4 4 8-9" style="animation-delay: 600ms"></path></svg><span class="ink">Reading the job post</span><span style="font-size: 14px">12 requirements found</span></div>
+          <div class="step" style="animation-delay: 1500ms"><svg class="tick" viewBox="0 0 18 18" fill="none" stroke="#383E28" stroke-width="1.4" aria-hidden="true"><path d="M3 9.5l4 4 8-9" style="animation-delay: 1900ms"></path></svg><span class="ink">Searching interview reports for this role</span><span style="font-size: 14px">6 sources</span></div>
+          <div class="step" style="animation-delay: 2800ms"><svg class="tick" viewBox="0 0 18 18" fill="none" stroke="#383E28" stroke-width="1.4" aria-hidden="true"><path d="M3 9.5l4 4 8-9" style="animation-delay: 3300ms"></path></svg><span class="ink">Checking what Salesforce looks for</span><span style="font-size: 14px">values, recent news</span></div>
+          <div class="step" style="animation-delay: 4000ms"><span class="spin" style="margin: 2px"></span><span class="ink">Matching against your resume</span></div>
+        </div>
+        <div class="card soft rise d3" style="padding: 28px; display: flex; flex-direction: column; gap: 14px">
+          <span class="eyebrow">Found so far</span>
+          <p class="w" style="animation-delay: 900ms"><span class="tag post">Job post</span> <span class="ink">Leads a team of 6–8 account executives in mid-market</span></p>
+          <p class="w" style="animation-delay: 2200ms"><span class="tag web">Web</span> <span class="ink">Three rounds reported: recruiter, hiring manager, final panel</span></p>
+          <p class="w" style="animation-delay: 3500ms"><span class="tag gen">General · not verified</span> <span class="ink">Final panel often includes a 30-60-90 day plan</span></p>
+        </div>
+        <div class="rise d4" style="display: flex; gap: 20px; align-items: center">
+          <a class="btn" href="Brief.dc.html">See the brief <span class="arr">→</span></a>
+          <button class="tlink" type="button" onClick="{{reset}}">Cancel</button>
+        </div>
+      </section>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1050}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { mode: 'link', busy: false }; }
+  renderVals() {
+    const m = this.state.mode;
+    return {
+      idle: !this.state.busy, busy: this.state.busy,
+      isLink: m === 'link', isPick: m === 'pick', isText: m === 'text',
+      c1: m === 'link' ? 'on' : '', c2: m === 'pick' ? 'on' : '', c3: m === 'text' ? 'on' : '',
+      m1: () => this.setState({ mode: 'link' }),
+      m2: () => this.setState({ mode: 'pick' }),
+      m3: () => this.setState({ mode: 'text' }),
+      start: () => this.setState({ busy: true }),
+      reset: () => this.setState({ busy: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

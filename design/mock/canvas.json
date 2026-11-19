@@ -1,0 +1,43 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-11-19T16:30:00Z"},
+  "title": "InterviewX Screens",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 1440, "h": 3900, "title": "01 Landing", "expand": "fill", "is_interactive": true},
+    "SignIn.dc.html": {"x": 1520, "y": 0, "w": 1440, "h": 900, "title": "02 Sign in", "expand": "fill", "is_interactive": true},
+    "Onboarding.dc.html": {"x": 3040, "y": 0, "w": 1440, "h": 1250, "title": "03 Onboarding", "expand": "fill", "is_interactive": true},
+    "MyJobs.dc.html": {"x": 0, "y": 4320, "w": 1440, "h": 1150, "title": "04 My Jobs", "expand": "fill", "is_interactive": true},
+    "AddJob.dc.html": {"x": 1520, "y": 4320, "w": 1440, "h": 1050, "title": "05 Add a job + research", "expand": "fill", "is_interactive": true},
+    "Brief.dc.html": {"x": 3040, "y": 4320, "w": 1440, "h": 2000, "title": "06 Research brief + confirm rounds", "expand": "fill", "is_interactive": true},
+    "Job.dc.html": {"x": 4560, "y": 4320, "w": 1440, "h": 1350, "title": "07 Job", "expand": "fill", "is_interactive": true},
+    "Round.dc.html": {"x": 6080, "y": 4320, "w": 1440, "h": 1350, "title": "08 Round (five tools)", "expand": "fill", "is_interactive": true},
+    "InterviewSetup.dc.html": {"x": 0, "y": 6740, "w": 1440, "h": 1000, "title": "09 Full interview: setup", "expand": "fill", "is_interactive": true},
+    "InterviewLive.dc.html": {"x": 1520, "y": 6740, "w": 1440, "h": 900, "title": "10 Full interview: live", "expand": "fill", "is_interactive": true},
+    "InterviewReview.dc.html": {"x": 3040, "y": 6740, "w": 1440, "h": 800, "title": "11 Full interview: reviewing", "expand": "fill", "is_interactive": true},
+    "InterviewResults.dc.html": {"x": 4560, "y": 6740, "w": 1440, "h": 2300, "title": "12 Full interview: results", "expand": "fill", "is_interactive": true},
+    "Call.dc.html": {"x": 0, "y": 9460, "w": 390, "h": 844, "title": "13 Call (phone)", "is_interactive": true},
+    "Scorecard.dc.html": {"x": 470, "y": 9460, "w": 1440, "h": 1750, "title": "14 Feedback (scorecard)", "expand": "fill", "is_interactive": true},
+    "SingleQuestions.dc.html": {"x": 1990, "y": 9460, "w": 1440, "h": 1500, "title": "15 Single questions", "expand": "fill", "is_interactive": true},
+    "Chat.dc.html": {"x": 3510, "y": 9460, "w": 1440, "h": 1050, "title": "16 Chat", "expand": "fill", "is_interactive": true},
+    "CheckIn.dc.html": {"x": 0, "y": 11630, "w": 1440, "h": 1150, "title": "17 How did it go?", "expand": "fill", "is_interactive": true},
+    "Settings.dc.html": {"x": 1520, "y": 11630, "w": 1440, "h": 1050, "title": "18 Settings (try Dark)", "expand": "fill", "is_interactive": true}
+  },
+  "order": [
+    "Main.dc.html", "SignIn.dc.html", "Onboarding.dc.html",
+    "MyJobs.dc.html", "AddJob.dc.html", "Brief.dc.html", "Job.dc.html", "Round.dc.html",
+    "InterviewSetup.dc.html", "InterviewLive.dc.html", "InterviewReview.dc.html", "InterviewResults.dc.html",
+    "Call.dc.html", "Scorecard.dc.html", "SingleQuestions.dc.html", "Chat.dc.html",
+    "CheckIn.dc.html", "Settings.dc.html"
+  ],
+  "notes": {
+    "row1": {"x": 0, "y": -300, "text": "Arrive: landing, sign in, onboarding", "kind": "title1", "maxW": 4480},
+    "row2": {"x": 0, "y": 4020, "text": "Jobs: add, research, rounds", "kind": "title1", "maxW": 7520},
+    "row3": {"x": 0, "y": 6440, "text": "Full interview", "kind": "title1", "maxW": 6000},
+    "row4": {"x": 0, "y": 9160, "text": "Call, Feedback, Single questions, Chat", "kind": "title1", "maxW": 4950},
+    "row5": {"x": 0, "y": 11330, "text": "After the round, and settings", "kind": "title1", "maxW": 2960},
+    "sample": {"x": 4600, "y": 0, "w": 420, "text": "All jobs, scores, research and transcripts here are sample content for layout only. Press Play on any screen: buttons link through the flow (Landing > Sign in > Onboarding > My Jobs > Job > Round > tools).", "fill": "gray", "size": "m"}
+  },
+  "designSystems": []
+}
