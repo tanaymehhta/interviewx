@@ -12,7 +12,7 @@ Greenfield repo. See proposal.md for why. Constraints that shape the approach:
 ## Goals / Non-Goals
 
 **Goals:**
-- One Next.js app on Vercel, with Supabase and AI Gateway as the only required services.
+- One Next.js app on Vercel, with Supabase and OpenRouter as the only required services.
 - Voice that feels live: question text and speech together, words on screen as you speak.
 - AI calls return typed JSON, so the UI never parses prose.
 
@@ -141,8 +141,8 @@ Tables (all with `user_id uuid references auth.users on delete cascade`, RLS on,
 Storage: private bucket `resumes`, object path `{uid}/resume.pdf`, policy restricts to the owner's folder.
 Delete account: `POST /api/account/delete` uses the service-role key server-side to delete the storage object and the auth user; cascades remove all rows.
 
-### 3. AI: AI SDK through Vercel AI Gateway, Claude Sonnet 5.5
-Model `anthropic/claude-sonnet-5-5`. Structured output with Zod schemas for every non-chat call; check `node_modules/ai/docs/` for the AI SDK 7 API before writing calls. Every handler verifies the Supabase session, loads context server-side (never trusts client-sent profile or brief), caps input sizes (posting 15k chars, answer 6k chars, PDF 3 MB), and returns 502 with a message on model failure.
+### 3. AI: AI SDK through OpenRouter, Claude Sonnet 5.5
+Changed 2026-11-19 (team lead): OpenRouter replaces Vercel AI Gateway. Provider `@openrouter/ai-sdk-provider`, key in `OPENROUTER_API_KEY`, one `MODEL` constant in `lib/server.ts`. Model `anthropic/claude-sonnet-5.5`. Structured output with Zod schemas for every non-chat call; check `node_modules/ai/docs/` for the AI SDK 7 API before writing calls. Every handler verifies the Supabase session, loads context server-side (never trusts client-sent profile or brief), caps input sizes (posting 15k chars, answer 6k chars, PDF 3 MB), and returns 502 with a message on model failure.
 
 | Route | Purpose |
 |---|---|
@@ -158,8 +158,8 @@ Model `anthropic/claude-sonnet-5-5`. Structured output with Zod schemas for ever
 Generating main questions up front keeps the live interview responsive: only the follow-up decision happens between answers.
 Upgraded answers: the prompt forbids new facts and requires `[placeholder]` for missing numbers; the schema returns a `placeholders` array the UI highlights.
 
-### 4. Job research: Claude's web tools first, Firecrawl + Exa as fallback
-Default: Claude's server-side web search and web fetch tools through the gateway, so one key covers reading the link and searching interview reports. Task 1.3 verifies the gateway supports them; if not, use Firecrawl (read the posting URL) and Exa (search interview reports, company values), adding `FIRECRAWL_API_KEY` and `EXA_API_KEY`. The spec does not change either way.
+### 4. Job research: posting read in code, search through OpenRouter
+Changed 2026-11-19 with decision 3. The posting link is read by a plain server-side fetch and reduced to text; pages that need a login or are drawn by JavaScript count as unreadable and the UI asks for pasted text. Searching (interview reports, company values) uses OpenRouter's web search server tool, so one key covers the model and search. Both live in `gatherWeb` in `lib/research.ts`. Fallback if postings are too often unreadable: Firecrawl for the read step. The spec does not change either way.
 Research runs as one route that streams step events ("Reading the job post", "Searching interview reports", …) so the UI shows live progress; hard stop at 90 s with a partial brief. Every brief item carries `source: 'job_post' | 'web' | 'resume' | 'general'` and `url` for web items. Login-walled links (LinkedIn) are detected from the fetch result and the UI asks for pasted text.
 
 ### 5. Deterministic logic stays in code
@@ -224,7 +224,7 @@ Presenter is already signed in with a Salesforce job prepared the day before.
 ## Risks / Trade-offs
 
 - [Supabase's built-in email sender has a low hourly limit and can land in spam] → configure custom SMTP before the demo (any transactional email provider), and sign the presenter in ahead of time.
-- [Claude web tools not available through AI Gateway] → Firecrawl + Exa fallback (decision 4).
+- [Posting pages drawn by JavaScript cannot be read by a plain fetch] → the person pastes the text; Firecrawl fallback (decision 4).
 - [Research invents round structures] → source tags, "not verified" labels, and the confirm-rounds step.
 - [Model latency on stage] → questions generated up front; review runs answers in parallel; staged loading screen; rehearse on the venue network.
 - [Speech recognition quirks, especially Safari on iPhone] → auto-restart in the hook; typing always available in Full interview; record a backup video of the voice flow.
@@ -233,7 +233,7 @@ Presenter is already signed in with a Salesforce job prepared the day before.
 
 ## Migration Plan
 
-1. `vercel link`; add Supabase and enable AI Gateway; `vercel env pull`.
+1. `vercel link`; add Supabase; add `OPENROUTER_API_KEY`; `vercel env pull`.
 2. Apply SQL migrations (tables, RLS, bucket policy) with the Supabase CLI.
 3. Deploy preview, run smoke and RLS scripts, walk the demo path, promote to production.
 4. Rollback: promote the previous deployment; migrations are additive.

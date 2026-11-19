@@ -41,5 +41,5 @@ Out of scope: demo/anonymous mode, real phone-number calling, human coach review
 ## Impact
 
 - New Next.js app in this repo, deployed to Vercel.
-- External services: Supabase (via Vercel Marketplace), an LLM via Vercel AI Gateway, and a web search/fetch capability for job research.
+- External services: Supabase (via Vercel Marketplace), an LLM via OpenRouter, and a web search/fetch capability for job research.
 - Browser APIs: Web Speech (recognition and synthesis). Voice works in Chrome, Edge, and Safari; other browsers fall back to typing.

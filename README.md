@@ -7,14 +7,14 @@ Interview practice built around the job and each round. Class prototype.
 
 ## Stack
 
-Next.js 16 (App Router) on Vercel · Supabase (Postgres, magic-link Auth, private Storage) through the Vercel Marketplace · AI SDK 7 through Vercel AI Gateway (`anthropic/claude-sonnet-5.5`) · Web Speech API for voice.
+Next.js 16 (App Router) on Vercel · Supabase (Postgres, magic-link Auth, private Storage) through the Vercel Marketplace · AI SDK 7 through OpenRouter (`anthropic/claude-sonnet-5.5`, key in `OPENROUTER_API_KEY`) · Web Speech API for voice.
 
 ## Run it
 
 ```bash
 npm install
 vercel link            # once
-vercel env pull        # writes .env.local (Supabase keys and the gateway OIDC token; the token lasts 12 hours)
+vercel env pull        # writes .env.local (Supabase keys and OPENROUTER_API_KEY)
 npm run dev
 ```
 
@@ -26,7 +26,7 @@ Database changes live in `supabase/migrations/`. Apply them with `supabase db pu
 node --test lib/coach.test.ts                          # scoring, plan, calendar logic
 node scripts/contrast.ts                               # WCAG AA contrast, both themes
 node --env-file=.env.local scripts/rls-check.ts        # data isolation on the linked database
-node --env-file=.env.local scripts/gateway-check.ts    # web search through AI Gateway
+node --env-file=.env.local scripts/model-check.ts      # model and web search through OpenRouter
 npx tsc --noEmit && npm run lint
 ```
 

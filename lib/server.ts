@@ -1,12 +1,14 @@
 import "server-only";
+import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Tables } from "@/lib/database.types";
 import type { Fact, ResumeAnalysis, StoredBrief } from "@/lib/schemas";
 import { activeRound, roundReadiness, weakestSkill } from "@/lib/coach";
 
-/** Model for every AI call, through Vercel AI Gateway. */
-export const MODEL = "anthropic/claude-sonnet-5.5";
+/** Model for every AI call, through OpenRouter. Reads OPENROUTER_API_KEY. */
+export const openrouter = createOpenRouter();
+export const MODEL = openrouter("anthropic/claude-sonnet-5.5");
 
 export const json = (body: unknown, status = 200) => Response.json(body, { status });
 /** 502 with a message the UI can show next to a retry button. */

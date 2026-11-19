@@ -4,8 +4,8 @@
 
 - [ ] 1.0 `git init`, create a GitHub repo with `gh repo create` (ask the user public or private), push, and add collaborators with `gh api repos/{owner}/{repo}/collaborators/{username} -X PUT` once the user gives usernames; verify `gh api repos/{owner}/{repo}/collaborators` lists them (invites show as pending until accepted)
 - [x] 1.1 Scaffold Next.js (App Router, TypeScript, Tailwind, ESLint) non-interactively; verify `npm run dev` serves a page at localhost:3000
-- [ ] 1.2 `vercel link`, add Supabase via `vercel integration add` (slug from `vercel integration discover`), enable AI Gateway, `vercel env pull`; verify `.env.local` has the Supabase URL, anon key, service-role key, and gateway credentials (names only, never printed values)
-- [ ] 1.3 Install `ai`, `zod`, `@supabase/supabase-js`, `@supabase/ssr`; read `node_modules/ai/docs/` for structured output, streaming, and whether Claude web search/fetch tools work through the gateway; record the result in design.md decision 4 and, if unsupported, add Firecrawl + Exa keys; verify a test call returns a search result
+- [ ] 1.2 `vercel link`, add Supabase via `vercel integration add` (slug from `vercel integration discover`), add `OPENROUTER_API_KEY` to Vercel, `vercel env pull`; verify `.env.local` has the Supabase URL, anon key, service-role key, and the OpenRouter key (names only, never printed values)
+- [ ] 1.3 Install `ai`, `zod`, `@supabase/supabase-js`, `@supabase/ssr`, `@openrouter/ai-sdk-provider`; read `node_modules/ai/docs/` for structured output and streaming; verify `scripts/model-check.ts` returns a search result through OpenRouter
 - [ ] 1.4 Copy the pitch video to `public/pitch.mp4` and generate `public/pitch.vtt` with Whisper; verify it plays with captions
 
 ## 2. Database
