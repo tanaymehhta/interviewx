@@ -172,14 +172,15 @@ Pure functions in `lib/coach.ts`, unit-tested:
 - Session delivery numbers (talk time, wpm, filler total, longest answer).
 - Round progression on outcome (Advanced → next round active; Offer/Rejected/Withdrew → close job).
 
-### 6. Voice: browser Web Speech API in one hook
-`useSpeech` wraps `SpeechRecognition` (`webkitSpeechRecognition` fallback) with `continuous` and `interimResults`, and `speechSynthesis` with the best available English voice. Rules:
+### 6. Voice: one hook; browser recognition, Fish Audio for the interviewer's voice
+Changed 2026-11-19 (team lead): the interviewer's voice comes from Fish Audio text-to-speech through `POST /api/speak` (key in `FISH_API_KEY`, voice in `FISH_VOICE_ID`), because browser voices sound robotic. The browser voice remains the fallback when the key is missing or the call fails. Recognition stays in the browser, since it gives live words for free.
+`useSpeech` wraps `SpeechRecognition` (`webkitSpeechRecognition` fallback) with `continuous` and `interimResults`, and plays the interviewer's voice. Rules:
 - Recognition stops while the interviewer speaks (prevents transcribing its own voice) and restarts on the utterance `end` event.
 - Interim words render in `stone`, final words in `ink`.
 - Chrome ends recognition after silence or about a minute; the hook restarts it automatically while an answer is open and joins the text.
 - Full interview: the answer ends only on Done or Space. Call: 3 s silence after 15+ words ends it.
 - Feature-detect on mount; unsupported browsers get typing (Full interview, Single questions) or a redirect suggestion (Call).
-Alternative: gateway speech-to-text and text-to-speech models (better voices, Firefox support). Not for v1: needs audio streaming and adds latency. Upgrade path if browser voices sound too robotic in rehearsal.
+Not done: server speech-to-text (would add Firefox support, but loses word-by-word display unless audio is streamed).
 
 ### 7. Visual system
 **Visual source of truth: `design/mock/`** (approved by the team lead 2026-11-19; live canvas https://claude.ai/artifact/QbF7yg4LwkTV94qTEhbqYi). One `.dc.html` per screen plus `ix.css`, which holds the exact tokens, components and motion (press scale 0.96 / 150ms, 100ms entrance stagger with 4px blur + 12px rise / 300ms ease-out, `cubic-bezier(0.2,0,0,1)`, reduced-motion gate). Port `ix.css` into the app's global styles and match each screen's layout and copy; the `.dc.html` template syntax (`{{ }}`, `sc-if`, `sc-for`) is mock-only.

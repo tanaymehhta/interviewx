@@ -27,7 +27,7 @@ export function Interview({ info }: { info: Info }) {
     setBusy(true);
     setError("");
     // Safari on iPhone only lets speech start from a tap. This keeps it open for the questions that follow.
-    if (speech.support?.synthesis) window.speechSynthesis.speak(new SpeechSynthesisUtterance(" "));
+    if ("speechSynthesis" in window) window.speechSynthesis.speak(new SpeechSynthesisUtterance(" "));
     try {
       const res = await fetch("/api/interview/start", {
         method: "POST", headers: { "content-type": "application/json" },

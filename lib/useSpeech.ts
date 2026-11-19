@@ -1,6 +1,7 @@
 "use client";
-// Browser voice in one hook (design.md decision 6): speech recognition with interim and final
-// words, speech output, and the rule that the microphone is off while the interviewer speaks.
+// Voice in one hook (design.md decision 6): browser speech recognition with interim and final
+// words, the interviewer's voice from Fish Audio (browser voice as fallback), and the rule that
+// the microphone is off while the interviewer speaks.
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- SpeechRecognition has no standard DOM types */
@@ -42,14 +43,25 @@ export function useSpeech(opts: SpeechOptions = {}) {
   const lastHeard = useRef(0);
   const optsRef = useRef(opts);
   const restart = useRef<() => void>(() => {});
+  const audio = useRef<HTMLAudioElement | null>(null);
+  const speakTurn = useRef(0);
   useEffect(() => { optsRef.current = opts; });
 
   useEffect(() => {
     // Feature detection has to wait for the browser; the server render shows the neutral state.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSupport({ recognition: !!getRecognition(), synthesis: "speechSynthesis" in window });
+    setSupport({ recognition: !!getRecognition(), synthesis: true });
     if ("speechSynthesis" in window) window.speechSynthesis.getVoices(); // voices load asynchronously
+    // One audio element for the interviewer's voice. Phones only allow sound that starts from a
+    // tap, and speech here starts after a network call, so the first tap plays a silent clip to unlock it.
+    const el = new Audio();
+    audio.current = el;
+    const SILENCE = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=";
+    const unlock = () => { if (el.paused && !el.src) { el.src = SILENCE; el.play().catch(() => {}); } };
+    document.addEventListener("pointerdown", unlock, { once: true });
     return () => {
+      document.removeEventListener("pointerdown", unlock);
+      el.pause();
       want.current = false;
       try { rec.current?.abort(); } catch {}
       if ("speechSynthesis" in window) window.speechSynthesis.cancel();
@@ -120,40 +132,74 @@ export function useSpeech(opts: SpeechOptions = {}) {
     return text;
   }, []);
 
-  /** Speaks text. The microphone is off until the last word ends. Resolves when speech ends. */
+  /** Browser voice: the fallback when the server voice is not available. */
+  const speakWithBrowser = useCallback((text: string, onStart: () => void, done: () => void) => {
+    if (!("speechSynthesis" in window)) { onStart(); done(); return; }
+    window.speechSynthesis.cancel();
+    // Chrome cuts long utterances, so speak sentence by sentence.
+    const parts = text.match(/[^.!?]+[.!?]*/g)?.map((s) => s.trim()).filter(Boolean) ?? [text];
+    const voice = pickVoice();
+    let started = false;
+    // Safety net: some browsers never fire `end` (tab in background, voice missing).
+    const guard = setTimeout(done, 4000 + text.length * 90);
+    parts.forEach((p, i) => {
+      const u = new SpeechSynthesisUtterance(p);
+      if (voice) u.voice = voice;
+      u.lang = voice?.lang ?? "en-US";
+      u.onstart = () => { if (!started) { started = true; onStart(); } };
+      if (i === parts.length - 1) u.onend = u.onerror = () => { clearTimeout(guard); if (!started) onStart(); done(); };
+      window.speechSynthesis.speak(u);
+    });
+  }, []);
+
+  /**
+   * Speaks text in the interviewer's voice (Fish Audio through /api/speak, browser voice as the
+   * fallback). The microphone is off until the last word ends. Resolves when speech ends.
+   */
   const speak = useCallback((text: string, onStart?: () => void): Promise<void> =>
     new Promise((resolve) => {
-      if (!("speechSynthesis" in window) || !text.trim()) { onStart?.(); resolve(); return; }
+      if (!text.trim()) { onStart?.(); resolve(); return; }
       const resume = want.current;
+      const turn = ++speakTurn.current;
       speakingRef.current = true;
       setSpeaking(true);
       try { rec.current?.abort(); } catch {}
-      window.speechSynthesis.cancel();
-      // Chrome cuts long utterances, so speak sentence by sentence.
-      const parts = text.match(/[^.!?]+[.!?]*/g)?.map((s) => s.trim()).filter(Boolean) ?? [text];
-      const voice = pickVoice();
-      let started = false;
+      let finished = false;
       const done = () => {
-        speakingRef.current = false;
-        setSpeaking(false);
-        if (resume && want.current) startRecognition();
+        if (finished) return;
+        finished = true;
+        if (turn === speakTurn.current) {
+          speakingRef.current = false;
+          setSpeaking(false);
+          if (resume && want.current) startRecognition();
+        }
         resolve();
       };
-      // Safety net: some browsers never fire `end` (tab in background, voice missing).
-      const guard = setTimeout(done, 4000 + text.length * 90);
-      parts.forEach((p, i) => {
-        const u = new SpeechSynthesisUtterance(p);
-        if (voice) u.voice = voice;
-        u.lang = voice?.lang ?? "en-US";
-        u.rate = 1;
-        u.onstart = () => { if (!started) { started = true; onStart?.(); } };
-        if (i === parts.length - 1) u.onend = u.onerror = () => { clearTimeout(guard); if (!started) onStart?.(); done(); };
-        window.speechSynthesis.speak(u);
-      });
-    }), [startRecognition]);
+      const start = () => onStart?.();
+      const el = audio.current;
+      if (!el) { speakWithBrowser(text, start, done); return; }
+      fetch("/api/speak", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text }), signal: AbortSignal.timeout(8000) })
+        .then((r) => (r.ok ? r.blob() : Promise.reject(new Error(String(r.status)))))
+        .then((blob) => {
+          if (turn !== speakTurn.current) { done(); return; } // cancelled while loading
+          const url = URL.createObjectURL(blob);
+          const end = () => { el.onended = el.onerror = el.onplaying = null; URL.revokeObjectURL(url); done(); };
+          el.onplaying = start;
+          el.onended = end;
+          el.onerror = end;
+          el.src = url;
+          return el.play();
+        })
+        .catch(() => { if (!finished) speakWithBrowser(text, start, done); });
+    }), [startRecognition, speakWithBrowser]);
 
   const cancelSpeech = useCallback(() => {
+    speakTurn.current++;
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    const el = audio.current;
+    if (el && !el.paused) { el.pause(); el.dispatchEvent(new Event("ended")); }
+    speakingRef.current = false;
+    setSpeaking(false);
   }, []);
 
   // Silence turn-taking for Call.
