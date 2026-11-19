@@ -163,7 +163,7 @@ a{color:var(--ink)} a:hover{color:var(--olive)}
 .day{transition:border-color 150ms ease-out,background-color 150ms ease-out}
 .day:hover{border-color:var(--ink)}
 .err{color:var(--garnet); font-size:14px; font-weight:400}
-dialog{border:1px solid var(--hair); border-radius:2px; background:var(--paper); color:var(--stone); padding:32px; max-width:min(520px,calc(100vw - 32px))}
+dialog{margin:auto; border:1px solid var(--hair); border-radius:2px; background:var(--paper); color:var(--stone); padding:32px; max-width:min(520px,calc(100vw - 32px))}
 dialog::backdrop{background:rgb(42 40 38 / .45)}
 .sr{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%)}
 @media (max-width:640px){ .wrap{padding:0 16px} .btn{padding:0 28px} }

@@ -16,9 +16,9 @@
 
 ## 3. Visual system
 
-- [ ] 3.1 Define light and dark tokens, Cormorant Garamond and Open Sans via `next/font`, type scale, focus ring, and reduced-motion rule; light is default and `data-theme` comes from the server; verify a token page renders both themes with no flash on load
-- [ ] 3.2 Build primitives: Button (primary/secondary/link), Card, Eyebrow, ScoreNumeral with bar, Sparkline, ToolTile, TopBar with job/round switcher, Transcript message; verify on the token page that buttons are square and cards have no shadow
-- [ ] 3.3 Check contrast for both themes (stone on paper, on-olive on olive, ink on ivory) and the banned-patterns list; verify all text pairs pass WCAG AA and note results in the README
+- [x] 3.1 Define light and dark tokens, Cormorant Garamond and Open Sans via `next/font`, type scale, focus ring, and reduced-motion rule; light is default and `data-theme` comes from the server; verify a token page renders both themes with no flash on load
+- [x] 3.2 Build primitives: Button (primary/secondary/link), Card, Eyebrow, ScoreNumeral with bar, Sparkline, ToolTile, TopBar with job/round switcher, Transcript message; verify on the token page that buttons are square and cards have no shadow
+- [x] 3.3 Check contrast for both themes (stone on paper, on-olive on olive, ink on ivory) and the banned-patterns list; verify all text pairs pass WCAG AA and note results in the README
 
 ## 4. Core logic
 
@@ -29,27 +29,27 @@
 
 - [ ] 5.1 Add Supabase clients, `proxy.ts` session refresh and protection, `/signin` (email link, sent state, expired-link state), and `/auth/callback` routing; verify sign-up lands on `/start`, return sign-in lands on `/jobs`, and a signed-out visit to a job URL returns there after sign-in
 - [ ] 5.2 Build `/start` onboarding (name, program, target roles, resume PDF ≤ 3 MB or text) with resume upload to Storage and resume on return; verify a .docx and a 4 MB PDF are rejected and closing mid-way resumes with fields kept
-- [ ] 5.3 Implement `POST /api/profile/analyze` and show strengths, gaps, and editable story names, with retry on failure; verify smoke output for a sample resume has named stories
+- [x] 5.3 Implement `POST /api/profile/analyze` and show strengths, gaps, and editable story names, with retry on failure; verify smoke output for a sample resume has named stories
 - [ ] 5.4 Build `/settings` (profile, replace resume, theme, sign out, delete account via `POST /api/account/delete`); verify Dark persists across devices and deletion removes rows and the resume file
 
 ## 6. Jobs and research
 
 - [ ] 6.1 Build `/jobs` My Jobs (cards sorted by next round date, empty state, Past jobs); verify with zero, one, and two jobs
 - [ ] 6.2 Implement `POST /api/research` with streamed step events, source tags, 90 s cutoff, and login-wall detection; verify smoke runs for a public posting link, a LinkedIn link (asks for text), and company + role only
-- [ ] 6.3 Build `/jobs/new`: input options, live research steps, source-tagged brief with "not verified" labels, confirm-rounds editor (add, remove, rename, reorder, date, interviewer notes, done); verify creating a job writes job, rounds, skills, and plans and opens the job page
+- [x] 6.3 Build `/jobs/new`: input options, live research steps, source-tagged brief with "not verified" labels, confirm-rounds editor (add, remove, rename, reorder, date, interviewer notes, done); verify creating a job writes job, rounds, skills, and plans and opens the job page
 - [ ] 6.4 Build `/jobs/:job` (brief, rounds with status, edit item, re-run research keeping edits) and `/jobs/:job/:round` (details, expectations, today's task with Begin, plan strip, Add to calendar, five tool tiles), plus the top-bar switcher; verify switching rounds changes the plan and tool links
-- [ ] 6.5 Add the after-6 PM reminder banner; verify it appears with the clock mocked to 7 PM and an unfinished task
+- [x] 6.5 Add the after-6 PM reminder banner; verify it appears with the clock mocked to 7 PM and an unfinished task
 
 ## 7. Shared voice and feedback
 
 - [ ] 7.1 Build `useSpeech` (recognition with interim/final, auto-restart, pause during speech output, voice choice, support detection); verify in Chrome that interim words show light, final words dark, and the interviewer's voice is not transcribed
-- [ ] 7.2 Implement `POST /api/feedback` with sentence marks, placeholders, round-fit items, and code-calculated Delivery; verify smoke output for a vague answer has a placeholder and no invented number
+- [x] 7.2 Implement `POST /api/feedback` with sentence marks, placeholders, round-fit items, and code-calculated Delivery; verify smoke output for a vague answer has a placeholder and no invented number
 - [ ] 7.3 Build the FeedbackCard (score, sub-scores, keep/cut/tighten marks, strengths, improvements, upgraded answer with highlighted placeholders, retry state) and wire score writes (`answers`, `skill_scores`, `skills`, re-plan); verify an answer scored 9 moves Behavioral storytelling 48 → 61 and the weakest skill changes
 
 ## 8. Full interview
 
 - [ ] 8.1 Build setup screen (expectations, length, answer mode, mic level check, headphones tip); verify Begin stays disabled until sound is heard and mic denial switches to Typing
-- [ ] 8.2 Implement `POST /api/interview/start` and `POST /api/interview/next`; verify start returns a persona intro and the right number of round-specific questions, and next returns a follow-up for an answer with no outcome
+- [x] 8.2 Implement `POST /api/interview/start` and `POST /api/interview/next`; verify start returns a persona intro and the right number of round-specific questions, and next returns a follow-up for an answer with no outcome
 - [ ] 8.3 Build the live screen (question shown as it is spoken, status line, live transcript, answer and total timers, Done/Space, Pause, Type instead, follow-up label, transcript drawer, End interview); verify a 6-second silence does not end an answer and Type instead keeps the transcript
 - [ ] 8.4 Implement `POST /api/interview/review` (parallel answer feedback + verdict, SWOT, round fit) and the staged loading screen with 60 s fallback; verify a 3-question session reaches results and an early end after question 2 shows "Incomplete · 2 of 6"
 - [ ] 8.5 Build the results screen (score, readiness change, verdict, round fit, SWOT, delivery numbers, expandable questions, next steps) and saved-session reopen; verify every section renders and reopening from the answer log shows the same results
@@ -66,18 +66,18 @@
 
 ## 11. Single questions and Chat
 
-- [ ] 11.1 Implement `POST /api/single` (question card, SWOT card, reply) and build the practice thread (suggestions, request in own words, spoken or typed answer, feedback card, "not an answer", saved history); verify "Let me practice tell me about yourself" yields a question card and the next answer gets a feedback card
+- [x] 11.1 Implement `POST /api/single` (question card, SWOT card, reply) and build the practice thread (suggestions, request in own words, spoken or typed answer, feedback card, "not an answer", saved history); verify "Let me practice tell me about yourself" yields a question card and the next answer gets a feedback card
 - [ ] 11.2 Implement `POST /api/chat` (streaming, server-loaded context, action-button tool, no scoring) and build `/chat` with history list; verify "What should I fix before Thursday?" names the weakest skills and a pasted answer does not change the scorecard
 
 ## 12. Round outcomes
 
-- [ ] 12.1 Add interview-day state and the post-round "How did it go?" check-in on My Jobs and the round page; verify with the clock mocked to the round date and the day after
-- [ ] 12.2 Build the outcome form (outcome, went well, went wrong, asked questions with Practice this), readiness snapshot, and job progression; verify Advanced activates the next round and Offer moves the job to Past jobs
+- [x] 12.1 Add interview-day state and the post-round "How did it go?" check-in on My Jobs and the round page; verify with the clock mocked to the round date and the day after
+- [x] 12.2 Build the outcome form (outcome, went well, went wrong, asked questions with Practice this), readiness snapshot, and job progression; verify Advanced activates the next round and Offer moves the job to Past jobs
 
 ## 13. Landing page
 
 - [ ] 13.1 Build `/` sections in spec order with sourced stats, pitch video, and Sign in / My Jobs top-bar link; verify every Get started opens sign-in and every statistic shows its source
-- [ ] 13.2 Add the career-center form writing to `leads` with inline email validation; verify a valid submit stores a row and "abc@" is rejected
+- [x] 13.2 Add the career-center form writing to `leads` with inline email validation; verify a valid submit stores a row and "abc@" is rejected
 
 ## 14. Integration and release
 

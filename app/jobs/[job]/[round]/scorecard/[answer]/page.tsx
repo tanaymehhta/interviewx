@@ -6,7 +6,7 @@ import { FeedbackCard } from "@/components/FeedbackCard";
 import { Eyebrow, TextLink, Turn, fmtDate, fmtTime } from "@/components/ui";
 import { TOOL_LABEL } from "@/components/scorecard/shared";
 
-export const metadata = { title: "Answer feedback · InterviewX" };
+export const metadata = { title: "Answer feedback" };
 
 export default async function Page({ params }: { params: Promise<{ job: string; round: string; answer: string }> }) {
   const { job: jobId, round: roundId, answer: answerId } = await params;

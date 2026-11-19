@@ -2,7 +2,7 @@ import { TopBar } from "@/components/TopBar";
 import { requireProfile } from "@/lib/server";
 import { AddJob } from "./AddJob";
 
-export const metadata = { title: "Add a job · InterviewX" };
+export const metadata = { title: "Add a job" };
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ mode?: string }> }) {
   await requireProfile();

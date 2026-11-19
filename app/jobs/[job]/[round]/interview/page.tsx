@@ -1,7 +1,7 @@
 import { Interview } from "@/components/interview/Interview";
 import { requireJob } from "@/lib/server";
 
-export const metadata = { title: "Full interview · InterviewX" };
+export const metadata = { title: "Full interview" };
 
 export default async function Page({ params }: { params: Promise<{ job: string; round: string }> }) {
   const { job, round: roundId } = await params;

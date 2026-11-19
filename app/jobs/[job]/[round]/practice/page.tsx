@@ -8,7 +8,7 @@ import { PracticeThread } from "@/components/practice/PracticeThread";
 import { pendingQuestion, suggestions, type Msg } from "@/components/practice/thread";
 import { singleThread, threadMessages } from "@/app/api/single/thread";
 
-export const metadata = { title: "Single questions · InterviewX" };
+export const metadata = { title: "Single questions" };
 
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)?.trim();
 

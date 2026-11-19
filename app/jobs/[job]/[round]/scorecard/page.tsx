@@ -6,7 +6,7 @@ import { CountUp } from "@/components/CountUp";
 import { Accent, Bar, Button, Eyebrow, Sparkline, TextLink, fmtDate } from "@/components/ui";
 import { TOOL_LABEL } from "@/components/scorecard/shared";
 
-export const metadata = { title: "Scorecard · InterviewX" };
+export const metadata = { title: "Scorecard" };
 
 const CSS = `
 .log table{border-collapse:collapse;width:100%;min-width:640px}

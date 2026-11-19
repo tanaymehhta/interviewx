@@ -5,7 +5,7 @@ import { inDays, OUTCOME_LABEL, STATUS_LABEL } from "@/components/jobs/bits";
 import { activeRound, daysBetween, isEarlyEstimate, roundReadiness } from "@/lib/coach";
 import { localNow, requireProfile } from "@/lib/server";
 
-export const metadata = { title: "My Jobs · InterviewX" };
+export const metadata = { title: "My Jobs" };
 
 const cardStyle = { padding: 36, display: "flex", flexDirection: "column", gap: 28, textDecoration: "none", color: "var(--stone)" } as const;
 

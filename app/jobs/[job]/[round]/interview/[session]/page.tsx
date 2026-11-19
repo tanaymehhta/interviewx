@@ -9,7 +9,7 @@ import type { Feedback, InterviewScript, StoredReview } from "@/lib/schemas";
 import { MIN_WORDS, wordCount } from "@/lib/score";
 import { requireJob } from "@/lib/server";
 
-export const metadata = { title: "Interview results · InterviewX" };
+export const metadata = { title: "Interview results" };
 
 // The mock keeps these two rules in its page head; globals.css does not have them.
 const ROW_CSS = `.qrow{transition:background-color 150ms ease-out}.qrow:hover{background:var(--ivory)}

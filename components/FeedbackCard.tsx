@@ -38,7 +38,7 @@ export function FeedbackCard({ feedback, onRetry, retrying, footer, bare }: {
     <>
       <div style={{ display: "flex", gap: 32, alignItems: "end", flexWrap: "wrap" }}>
         <div><span className="serif num" style={{ fontSize: 64, lineHeight: 1 }}>{feedback.overall.toFixed(1)}</span><span style={{ fontSize: 14 }}> / 10</span></div>
-        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(4, minmax(70px, 1fr))", gap: 14 }}>
+        <div style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 12 }}>
           {SUBS.map(([label, key]) => (
             <div key={key}>
               <p style={{ fontSize: 12 }}>{label}</p>
