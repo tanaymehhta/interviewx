@@ -22,7 +22,7 @@
 
 ## 4. Core logic
 
-- [ ] 4.1 Write `lib/coach.ts` (skill update, overall skills, round readiness, weakest skill, difficulty band, delivery sub-score, session delivery numbers, round progression); verify `node --test lib/coach.test.ts` passes, including 58 → 65 and 48 → 61
+- [x] 4.1 Write `lib/coach.ts` (skill update, overall skills, round readiness, weakest skill, difficulty band, delivery sub-score, session delivery numbers, round progression); verify `node --test lib/coach.test.ts` passes, including 58 → 65 and 48 → 61
 - [ ] 4.2 Add per-round plan builder, re-planner, and `.ics` builder; verify tests for 1-day and 7-day plans, unchanged completed days, and an .ics that imports into macOS Calendar
 
 ## 5. Auth, onboarding, settings

@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# InterviewX
 
-## Getting Started
+Interview practice built around the job and each round. Class prototype.
 
-First, run the development server:
+- Spec: `openspec/changes/build-interviewx-app/` (proposal, design, tasks, one spec per capability)
+- Visual source of truth: `design/mock/` (`ix.css` is ported into `app/globals.css`)
+
+## Stack
+
+Next.js 16 (App Router) on Vercel · Supabase (Postgres, magic-link Auth, private Storage) through the Vercel Marketplace · AI SDK 7 through Vercel AI Gateway (`anthropic/claude-sonnet-5.5`) · Web Speech API for voice.
+
+## Run it
 
 ```bash
+npm install
+vercel link            # once
+vercel env pull        # writes .env.local (Supabase keys and the gateway OIDC token; the token lasts 12 hours)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Database changes live in `supabase/migrations/`. Apply them with `supabase db push`, then regenerate `lib/database.types.ts` with `supabase gen types typescript`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+node --test lib/coach.test.ts                          # scoring, plan, calendar logic
+node scripts/contrast.ts                               # WCAG AA contrast, both themes
+node --env-file=.env.local scripts/rls-check.ts        # data isolation on the linked database
+node --env-file=.env.local scripts/gateway-check.ts    # web search through AI Gateway
+npx tsc --noEmit && npm run lint
+```
 
-## Learn More
+To test date-dependent screens (interview day, "How did it go?", the 6 PM reminder), set `localStorage.ix_now` to an ISO time such as `2026-11-26T19:00` in the browser console and reload. Remove the key to return to the real clock.
 
-To learn more about Next.js, take a look at the following resources:
+## Visual rules
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Light is the default and does not follow the operating system. Dark is a choice in Settings, saved on the account and applied by the server (`data-theme` on `<html>`), so there is no flash. `/tokens` shows every token and primitive in both themes.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Contrast (WCAG AA needs 4.5:1 for body text), from `scripts/contrast.ts`:
 
-## Deploy on Vercel
+| Pair | Light | Dark |
+|---|---|---|
+| stone on paper | 5.57 | 7.79 |
+| stone on ivory | 5.11 | 7.10 |
+| ink on paper | 14.69 | 15.00 |
+| ink on ivory | 13.49 | 13.66 |
+| on-olive on olive | 11.12 | 7.59 |
+| olive on paper | 11.12 | 7.59 |
+| garnet on paper | 9.49 | 6.41 |
+| ink on gold-soft | 12.49 | 10.67 |
+| stone on gold-soft | 4.74 | 5.54 |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+All pairs pass. Gold is a fill only. In the dark theme the keep mark uses gold-soft with a gold rule, because light text on solid gold is 1.76:1.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Never used: emojis, purple or blue-violet gradients, glass or blurred panels, glowing borders, sparkle icons, "AI-powered" badges, pill buttons, card shadows, icon-in-a-circle feature grids, coloured chat bubbles.

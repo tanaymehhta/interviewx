@@ -16,7 +16,7 @@ html{
   color:var(--stone); background:var(--paper); -webkit-font-smoothing:antialiased;
   min-height:100vh; box-sizing:border-box;
 }
-html[data-theme="dark"]{
+[data-theme="dark"]{
   --paper:#1C1B19; --ivory:#252320; --ink:#F3EFE6; --stone:#B3AEA4; --olive:#A9B08A; --olive-2:#BCC29F;
   --on-olive:#1C1B19; --garnet:#D9897D; --gold:#C9B66C; --gold-soft:#3A3524; --hair:#3A3733;
 }
@@ -69,7 +69,7 @@ html[data-theme="dark"]{
 .field{display:flex; flex-direction:column; gap:6px}
 .field label{font-size:12px; font-weight:400; letter-spacing:.14em; text-transform:uppercase; color:var(--stone)}
 .inp{font:inherit; font-size:17px; color:var(--ink); background:transparent; border:0; border-bottom:1px solid var(--hair); border-radius:0; padding:10px 0; outline:none; transition:border-color 200ms var(--ease); width:100%}
-.inp::placeholder{color:var(--stone); opacity:.75}
+.inp::placeholder{color:var(--stone); opacity:1}
 .inp:focus{border-bottom-color:var(--olive)}
 textarea.inp{border:1px solid var(--hair); padding:14px; resize:none; line-height:1.7}
 textarea.inp:focus{border-color:var(--olive)}
@@ -152,7 +152,11 @@ details summary::-webkit-details-marker{display:none}
 }
 
 /* app additions */
+/* dark: light text over a solid gold strip fails contrast, so the keep mark is a soft fill with a gold rule */
+[data-theme="dark"] .keep{background:var(--gold-soft); border-bottom:2px solid var(--gold)}
 body{margin:0; min-height:100vh; background:var(--paper)}
+/* a nested data-theme (token page) re-applies the surface */
+body [data-theme]{color:var(--stone); background:var(--paper)}
 a{color:var(--ink)} a:hover{color:var(--olive)}
 .btn:disabled,.choice:disabled{opacity:.45; cursor:not-allowed}
 .btn:disabled:active{scale:1}
