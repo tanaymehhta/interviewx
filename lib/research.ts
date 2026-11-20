@@ -2,7 +2,10 @@
 import "server-only";
 import { generateText, isStepCount, Output, streamText } from "ai";
 import { Brief } from "@/lib/schemas";
+import { isWalled, readPosting } from "@/lib/posting";
 import { MODEL, openrouter, STYLE } from "@/lib/server";
+
+export { isWalled };
 
 export type ResearchInput = {
   url?: string; postingText?: string; company?: string; role?: string;
@@ -17,39 +20,6 @@ export type ResearchEvent =
 
 const GATHER_MS = 55_000;
 const HARD_MS = 88_000; // the route promises an answer within 90 s
-
-/** Sites that always answer with a login page. Other unreadable pages are caught from the fetch result. */
-const WALLED = /(^|\.)linkedin\.com$/i;
-export const isWalled = (url: string) => {
-  try { return WALLED.test(new URL(url).hostname); } catch { return true; }
-};
-
-/**
- * Reads a public posting page as plain text. Returns null when the page cannot be read: fetch
- * error, not HTML, or too little text (login pages and pages drawn by JavaScript).
- * ponytail: plain fetch, no browser. Postings rendered client-side (Workday and similar) come back
- * unreadable and the person pastes the text; use a scraping service if that happens too often.
- */
-async function readPosting(url: string, signal: AbortSignal): Promise<string | null> {
-  try {
-    const res = await fetch(url, {
-      signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),
-      headers: { "user-agent": "Mozilla/5.0 (compatible; InterviewX/1.0)", accept: "text/html" },
-      redirect: "follow",
-    });
-    if (!res.ok || !(res.headers.get("content-type") ?? "").includes("html")) return null;
-    if (isWalled(res.url)) return null; // redirected to a login wall
-    const text = (await res.text())
-      .replace(/<(script|style|noscript|svg|nav|footer|header)[\s\S]*?<\/\1>/gi, " ")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/&nbsp;|&#160;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#39;|&rsquo;/g, "'").replace(/&quot;/g, '"')
-      .replace(/\s+/g, " ").trim();
-    if (text.length < 600 || /sign in to (view|continue|apply)|log in to continue|enable javascript/i.test(text.slice(0, 1500))) return null;
-    return text.slice(0, 15_000);
-  } catch {
-    return null;
-  }
-}
 
 /**
  * The web capability, in one place: the posting link is read in code, and searching is OpenRouter's
