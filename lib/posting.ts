@@ -40,19 +40,27 @@ export function jsonLdPosting(html: string): string | null {
  */
 export async function readPosting(url: string, signal: AbortSignal): Promise<string | null> {
   try {
-    const get = (u: string, accept: string) => fetch(u, {
-      signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),
-      headers: { "user-agent": "Mozilla/5.0 (compatible; InterviewX/1.0)", accept },
-      redirect: "follow",
-    });
-    let text: string;
+    // Job sites answer 429 or 503 now and then (Workday does); two more tries, a moment apart, clear it.
+    const get = async (u: string, accept: string) => {
+      for (let attempt = 0; ; attempt++) {
+        const res = await fetch(u, {
+          signal: AbortSignal.any([signal, AbortSignal.timeout(10_000)]),
+          headers: { "user-agent": "Mozilla/5.0 (compatible; InterviewX/1.0)", accept },
+          redirect: "follow",
+        });
+        if (attempt === 2 || ![429, 503].includes(res.status)) return res;
+        await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+      }
+    };
+    let text = "";
     const workday = workdayJson(url);
     if (workday) {
       const res = await get(workday, "application/json");
-      if (!res.ok) return null;
-      const j = (await res.json()).jobPostingInfo;
-      text = strip(`${j.title}. ${j.location ?? ""}. ${j.timeType ?? ""}. ${j.jobDescription}`);
-    } else {
+      const j = res.ok ? (await res.json().catch(() => null))?.jobPostingInfo : null;
+      if (j) text = strip(`${j.title}. ${j.location ?? ""}. ${j.timeType ?? ""}. ${j.jobDescription}`);
+    }
+    // Also the fallback when Workday's JSON is refused: its page carries the same posting as JobPosting data.
+    if (!text) {
       const res = await get(url, "text/html");
       if (!res.ok || !(res.headers.get("content-type") ?? "").includes("html")) return null;
       if (isWalled(res.url)) return null; // redirected to a login wall

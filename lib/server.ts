@@ -8,7 +8,10 @@ import { activeRound, roundReadiness, weakestSkill } from "@/lib/coach";
 
 /** Model for every AI call, through OpenRouter. Reads OPENROUTER_API_KEY. */
 export const openrouter = createOpenRouter();
-export const MODEL = openrouter("anthropic/claude-haiku-5.5");
+// AI_MODEL swaps the model without a code change. AI_PROVIDER is OpenRouter routing as JSON, for example
+// {"zdr":true,"sort":"throughput"}: only providers that keep no prompt data, fastest first.
+export const MODEL = openrouter(process.env.AI_MODEL ?? "anthropic/claude-haiku-5.5",
+  process.env.AI_PROVIDER ? { provider: JSON.parse(process.env.AI_PROVIDER) } : {});
 
 export const json = (body: unknown, status = 200) => Response.json(body, { status });
 /** 502 with a message the UI can show next to a retry button. */
