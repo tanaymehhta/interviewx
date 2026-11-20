@@ -343,6 +343,19 @@ Not sure whether something is a bug or how a feature is meant to work? Read the 
 - **Jobs created before 20 November 2026** have no requirements or scorecard until research is re-run.
 - **`tasks.md`** has unticked boxes. A box is ticked only after its check has actually passed. Do not tick a box you did not verify.
 
+### Open items for Tanay (status on 20 November 2026)
+
+An agent must not act on these without Tanay. They are listed so nobody is surprised.
+
+- **Sign-in email:** set up a custom email sender (SMTP) in Supabase, or add another way to sign in. Until then only about 2 people per hour can get a sign-in link.
+- **Research on the live model:** decide whether research goes back to Claude Haiku (so the source check finishes) or the 90-second limit is raised.
+- **OpenRouter credit:** about $9 was left. Top up before many people use the site.
+- **Keys:** the OpenRouter and Fish Audio keys should be replaced with new ones, then updated in Vercel and in each teammate's `.env.local`.
+- **Collaborators:** `manseerattt` and `Rdlevine01` are invited with write access and must accept the invitation.
+- **`main` is not protected** on GitHub. Nothing technical stops a push to it.
+- **Not yet tested:** voice practice (microphone, Call turn-taking, iPhone Safari), the calendar file import, and real email delivery to Gmail.
+- **`tasks.md`:** 19 of 43 boxes are ticked.
+
 ## 14. Words you may need to explain
 
 - **Repository (repo):** the folder of code, with its full history, stored on GitHub.
