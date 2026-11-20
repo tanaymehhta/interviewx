@@ -345,16 +345,16 @@ Not sure whether something is a bug or how a feature is meant to work? Read the 
 
 ### Open items for Tanay (status on 20 November 2026)
 
-An agent must not act on these without Tanay. They are listed so nobody is surprised.
+An agent must not act on these without Tanay. They are listed, most urgent first, so nobody is surprised. When one is resolved, remove it here and in `README.md`.
 
-- **Sign-in email:** set up a custom email sender (SMTP) in Supabase, or add another way to sign in. Until then only about 2 people per hour can get a sign-in link.
-- **Research on the live model:** decide whether research goes back to Claude Haiku (so the source check finishes) or the 90-second limit is raised.
-- **OpenRouter credit:** about $9 was left. Top up before many people use the site.
-- **Keys:** the OpenRouter and Fish Audio keys should be replaced with new ones, then updated in Vercel and in each teammate's `.env.local`.
-- **Collaborators:** `manseerattt` and `Rdlevine01` are invited with write access and must accept the invitation.
-- **`main` is not protected** on GitHub. Nothing technical stops a push to it.
-- **Not yet tested:** voice practice (microphone, Call turn-taking, iPhone Safari), the calendar file import, and real email delivery to Gmail.
-- **`tasks.md`:** 19 of 43 boxes are ticked.
+1. **Sign-in email limit.** Supabase's built-in sender allows about 2 sign-in emails per hour for the whole project. Until a custom email sender (SMTP) or another sign-in method is set up, only about 2 people per hour can get in. Delivery to Gmail is also unconfirmed; the email may land in spam.
+2. **Research source check.** On the live model (DeepSeek) the last research step usually runs out of time, so web-tagged facts are not double-checked and the brief says "Source check did not finish". Decide: move research back to Claude Haiku, or raise the 90-second limit.
+3. **OpenRouter credit.** About $9 was left. When it runs out, every AI feature fails. Top up before many people use the site.
+4. **Rotate two keys.** The OpenRouter and Fish Audio keys were shared in a chat. Replace both, then update them in Vercel (and redeploy) and in each teammate's `.env.local`.
+5. **Collaborators.** `manseerattt` and `Rdlevine01` are invited with write access and must accept the invitation. `main` is not protected on GitHub, so nothing technical stops a push to it.
+6. **Voice practice is untested** on a real microphone and on iPhone Safari (Full interview in Voice mode, and Call). The calendar file import is also untested.
+
+Also open: 19 of 43 boxes in `tasks.md` are ticked, and no AI call has an output limit, so a model that loops can run up cost.
 
 ## 14. Words you may need to explain
 

@@ -95,13 +95,25 @@ Database changes are new SQL files in `supabase/migrations/`. The owner applies 
 
 Pushing to `main` deploys to production. Changes go through a branch and a pull request; the owner merges. A change to a Vercel setting needs a redeploy to take effect.
 
+## Open items (status on 20 November 2026)
+
+Most urgent first. These are the owner's to resolve.
+
+1. **Sign-in email limit.** Supabase's built-in sender allows about 2 sign-in emails per hour for the whole project. Until a custom email sender (SMTP) or another sign-in method is set up, only about 2 people per hour can get in. Delivery to Gmail is also unconfirmed; the email may land in spam.
+2. **Research source check.** On the live model (DeepSeek) the last research step usually runs out of time, so web-tagged facts are not double-checked and the brief says "Source check did not finish". Decide: move research back to Claude Haiku, or raise the 90-second limit.
+3. **OpenRouter credit.** About $9 was left. When it runs out, every AI feature fails. Top up before many people use the site.
+4. **Rotate two keys.** The OpenRouter and Fish Audio keys were shared in a chat. Replace both, then update them in Vercel (and redeploy) and in each teammate's `.env.local`.
+5. **Collaborators.** `manseerattt` and `Rdlevine01` are invited with write access and must accept the invitation. `main` is not protected on GitHub, so nothing technical stops a push to it.
+6. **Voice practice is untested** on a real microphone and on iPhone Safari (Full interview in Voice mode, and Call). The calendar file import is also untested.
+
+Also open: 19 of 43 boxes in `tasks.md` are ticked, and no AI call has an output limit, so a model that loops can run up cost.
+
 ## Known limits
 
-- Supabase's built-in email sender allows about 2 sign-in emails per hour for the whole project until a custom SMTP sender is set up.
-- On the current live model the last research step (checking each web-tagged fact against its page) often runs out of time; the brief then says so.
-- Many round details are "Inferred · not verified", because few public pages describe a company's rounds.
+- Many round details are "Inferred · not verified", because few public pages describe a company's rounds. Reddit pages rarely appear in research; the search tool cannot be limited to one site.
 - LinkedIn and some other job pages cannot be read; the app asks for the posting text instead.
-- Voice practice has not been fully tested on iPhone Safari.
+- Round scorecards cannot be edited by hand; re-running research replaces them.
+- Jobs created before 20 November 2026 have no requirements or scorecard until research is re-run.
 
 ## Visual rules
 

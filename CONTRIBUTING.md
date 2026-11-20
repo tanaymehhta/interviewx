@@ -23,3 +23,7 @@ Say what you saw, what you expected, and why it matters. Add a screenshot if you
 - **Never commit `.env.local`** or paste a key anywhere. `.env.example` lists the names only.
 - **Do not change the live database.** Put database changes in a new file under `supabase/migrations/`; Tanay applies them.
 - **AI calls cost money.** Do not run them in a loop.
+
+## Before you report a problem
+
+Check the **Open items** and **Known limits** in [`README.md`](README.md). If the problem is listed there (for example, the sign-in email did not arrive, or the brief says "Source check did not finish"), it is already known.
