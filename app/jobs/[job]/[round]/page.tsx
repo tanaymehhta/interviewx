@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { TopBar } from "@/components/TopBar";
 import { Button, fmtDate, TextLink, ToolTile } from "@/components/ui";
-import { AccentLast, inDays, OUTCOME_LABEL, roundMeta } from "@/components/jobs/bits";
+import { AccentLast, CriterionRows, FactRows, inDays, OUTCOME_LABEL, roundMeta } from "@/components/jobs/bits";
 import { daysBetween, isEarlyEstimate, type Outcome } from "@/lib/coach";
-import type { Fact } from "@/lib/schemas";
+import type { Criterion, Fact } from "@/lib/schemas";
 import { localNow, requireJob } from "@/lib/server";
 import { setRoundDate } from "./actions";
 import { Calendar } from "./Calendar";
@@ -164,7 +164,13 @@ export default async function Page({ params, searchParams }: {
           {asks.length > 0 && (
             <details>
               <summary className="tlink" style={{ fontSize: 14, display: "inline" }}>What is asked</summary>
-              <div style={{ ...col(8), paddingTop: 12 }}>{asks.map((f, i) => <span key={i} className="ink" style={{ fontSize: 15 }}>{f.text}</span>)}</div>
+              <div style={{ paddingTop: 12 }}><FactRows facts={asks} /></div>
+            </details>
+          )}
+          {round.scorecard.length > 0 && (
+            <details>
+              <summary className="tlink" style={{ fontSize: 14, display: "inline" }}>Scorecard · what this round is scored on</summary>
+              <div style={{ paddingTop: 12 }}><CriterionRows items={round.scorecard as Criterion[]} /></div>
             </details>
           )}
         </div>

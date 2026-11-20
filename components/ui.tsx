@@ -1,7 +1,7 @@
 // Shared primitives. Class names come from design/mock/ix.css (ported into app/globals.css).
 import Link from "next/link";
 import type { ComponentProps, CSSProperties, ReactNode } from "react";
-import { SOURCE_LABEL, type Fact, type RoundFit, type Source, type Swot } from "@/lib/schemas";
+import { siteName, SOURCE_LABEL, type Fact, type RoundFit, type Source, type Swot } from "@/lib/schemas";
 
 type ButtonProps = {
   variant?: "primary" | "secondary" | "danger";
@@ -85,14 +85,32 @@ export function Turn({ who, children, className = "" }: { who: string; children:
 const TAG_CLASS: Record<Source, string> = { job_post: "post", web: "web", resume: "", general: "gen" };
 /** Source tag for one researched fact. General knowledge shows "not verified". */
 export function SourceTag({ fact }: { fact: Pick<Fact, "source" | "url"> }) {
-  const label = fact.source === "general" ? "General knowledge · not verified" : SOURCE_LABEL[fact.source];
+  const label = fact.source === "general" ? "Inferred · not verified" : fact.source === "web" && fact.url ? siteName(fact.url) : SOURCE_LABEL[fact.source];
   const cls = `tag ${TAG_CLASS[fact.source]}`;
   return fact.source === "web" && fact.url
     ? <a className={cls} href={fact.url} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>{label} ↗</a>
     : <span className={cls}>{label}</span>;
 }
 
-const FIT_WORD = { met: "Met", partly: "Partly", missing: "Missing" } as const;
+/** Scores of one interview against the round scorecard. */
+export function ScoreList({ items }: { items: { criterion: string; score: number; note: string }[] }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      {items.map((c, i) => (
+        <div key={i} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "baseline" }}>
+            <span className="ink" style={{ fontWeight: 400 }}>{c.criterion}</span>
+            <span className="num ink">{c.score}<span style={{ fontSize: 13, color: "var(--stone)" }}> / 10</span></span>
+          </div>
+          <Bar value={c.score * 10} garnet={c.score < 5} delay={i * 120} />
+          {c.note && <span style={{ fontSize: 14 }}>{c.note}</span>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export const FIT_WORD = { met: "Met", partly: "Partly", missing: "Missing" } as const;
 export function RoundFitList({ items }: { items: RoundFit }) {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>

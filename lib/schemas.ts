@@ -16,6 +16,36 @@ export const Fact = z.object({
 });
 export type Fact = z.infer<typeof Fact>;
 
+const SITES: Record<string, string> = {
+  "reddit.com": "Reddit", "glassdoor.com": "Glassdoor", "teamblind.com": "Blind", "indeed.com": "Indeed",
+  "linkedin.com": "LinkedIn", "levels.fyi": "Levels.fyi", "youtube.com": "YouTube",
+};
+/** Site name for a source tag: "Reddit", "Glassdoor", or the bare host name. */
+export function siteName(url: string): string {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    const known = Object.keys(SITES).find((d) => host === d || host.endsWith(`.${d}`) || host.startsWith(`${d.split(".")[0]}.`));
+    return known ? SITES[known] : host;
+  } catch { return "the web"; }
+}
+
+export const FitStatus = z.enum(["met", "partly", "missing"]);
+/** One requirement of the job, checked against the resume. */
+export const Requirement = Fact.extend({
+  status: FitStatus.describe("Against the candidate's resume"),
+  note: z.string().describe("A few words on why, naming the resume evidence or the gap"),
+});
+export type Requirement = z.infer<typeof Requirement>;
+
+/** One line of a round's scorecard: what the interviewer scores, and what a strong answer shows. */
+export const Criterion = z.object({
+  criterion: z.string().describe("Short name, 2 to 5 words"),
+  strong: z.string().describe("One sentence: what a strong candidate shows for this criterion"),
+  source: Source,
+  url: z.string().nullable().describe("Page URL when source is web, else null"),
+});
+export type Criterion = z.infer<typeof Criterion>;
+
 export const BriefRound = z.object({
   name: z.string().describe('Short round name, for example "Recruiter screen"'),
   format: z.string().describe("phone, video, onsite, case, panel, take-home"),
@@ -23,8 +53,10 @@ export const BriefRound = z.object({
   interviewer_type: z.string().describe('Who interviews, for example "Hiring manager"'),
   asks: z.array(Fact).describe("2 to 4 question types or sample questions for this round"),
   expects: z.array(Fact).describe("2 to 4 things candidates are judged on in this round"),
+  scorecard: z.array(Criterion).describe("3 to 5 criteria this round is scored on, built from what it expects"),
   skills: z.array(z.string()).describe("Names from the skills list that this round tests"),
   source: Source,
+  url: z.string().nullable().describe("The page that describes this round, when source is web, else null"),
 });
 export type BriefRound = z.infer<typeof BriefRound>;
 
@@ -33,6 +65,7 @@ export const Brief = z.object({
   role: z.string(),
   summary: z.string().describe("One or two plain sentences on what the company looks for in this role"),
   company_wants: z.array(Fact).describe("3 to 6 values, traits, or things the company rewards"),
+  requirements: z.array(Requirement).describe("5 to 8 requirements of the job, most important first"),
   skills: z.array(z.object({ name: z.string(), reason: z.string(), source: Source })).describe("3 to 5 key skills for the role"),
   rounds: z.array(BriefRound).describe("The likely interview rounds in order"),
   suggested_posting_url: z.string().nullable().describe("A current public posting, only when the person gave no link"),
@@ -40,7 +73,7 @@ export const Brief = z.object({
 });
 export type Brief = z.infer<typeof Brief>;
 /** jobs.brief keeps everything except rounds and skills, which have their own tables. */
-export type StoredBrief = Pick<Brief, "summary" | "company_wants" | "missing"> & { researched_at: string };
+export type StoredBrief = Pick<Brief, "summary" | "company_wants" | "missing"> & { researched_at: string; requirements?: Requirement[] };
 
 export const ResumeAnalysis = z.object({
   strengths: z.array(z.string()).describe("Up to 3 strengths"),
@@ -50,7 +83,6 @@ export const ResumeAnalysis = z.object({
 });
 export type ResumeAnalysis = z.infer<typeof ResumeAnalysis>;
 
-export const FitStatus = z.enum(["met", "partly", "missing"]);
 export const RoundFit = z.array(z.object({ expectation: z.string(), status: FitStatus, note: z.string().describe("A few words on why") }));
 export type RoundFit = z.infer<typeof RoundFit>;
 
@@ -97,6 +129,8 @@ export const SessionReview = z.object({
   verdict: z.string().describe("One line, under 20 words"),
   swot: Swot.describe("At least one item in each quadrant"),
   round_fit: RoundFit.describe("Every expectation of the round"),
+  scorecard: z.array(z.object({ criterion: z.string(), score: z.number().describe("0 to 10"), note: z.string().describe("A few words on why") }))
+    .describe("Every criterion of the round scorecard"),
 });
 /** sessions.review */
 export type StoredReview = z.infer<typeof SessionReview> & {

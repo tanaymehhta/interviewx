@@ -303,6 +303,7 @@ export type Database = {
           created_at: string
           date: string | null
           expects: Json
+          scorecard: Json
           format: string | null
           id: string
           interviewer_notes: string | null
@@ -324,6 +325,7 @@ export type Database = {
           created_at?: string
           date?: string | null
           expects?: Json
+          scorecard?: Json
           format?: string | null
           id?: string
           interviewer_notes?: string | null
@@ -345,6 +347,7 @@ export type Database = {
           created_at?: string
           date?: string | null
           expects?: Json
+          scorecard?: Json
           format?: string | null
           id?: string
           interviewer_notes?: string | null

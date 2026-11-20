@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState, useTransition } from "react";
 import { Button, SourceTag, Steps, TextLink } from "@/components/ui";
-import { FactRows, roundMeta } from "@/components/jobs/bits";
+import { CriterionRows, FactRows, RequirementRows, roundMeta } from "@/components/jobs/bits";
 import { RESEARCH_STEPS, useResearch } from "@/components/jobs/useResearch";
 import { LIMITS, type Brief, type BriefRound } from "@/lib/schemas";
 import { createJob } from "./actions";
@@ -121,14 +121,14 @@ function BriefForm({ brief, partial, sourceUrl, postingText, onRerun }: {
   });
   const add = () => setRounds((rs) => [...rs, {
     key: nextKey.current++, name: "New round", format: "video", length_minutes: 45, interviewer_type: "",
-    asks: [], expects: [], skills: [], source: "general", date: "", notes: "", done: false,
+    asks: [], expects: [], scorecard: [], skills: [], source: "general", url: null, date: "", notes: "", done: false,
   }]);
   const save = () => {
     setError("");
     startSaving(async () => {
       const res = await createJob({
         company, role, sourceUrl: sourceUrl ?? (useSuggested ? brief.suggested_posting_url : null), postingText,
-        summary: brief.summary, company_wants: brief.company_wants, missing: brief.missing, skills: brief.skills,
+        summary: brief.summary, company_wants: brief.company_wants, requirements: brief.requirements, missing: brief.missing, skills: brief.skills,
         rounds: rounds.map((r) => ({ ...r, date: r.date || null })), // the action's schema drops `key`
       });
       if (res?.error) setError(res.error);
@@ -151,7 +151,7 @@ function BriefForm({ brief, partial, sourceUrl, postingText, onRerun }: {
         {brief.summary && <p className="rise d2" style={{ maxWidth: 720 }}>{brief.summary}</p>}
         <div className="rise d2" style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", fontSize: 14 }}>
           <span>Every fact shows where it came from:</span>
-          <SourceTag fact={{ source: "job_post", url: null }} /><SourceTag fact={{ source: "web", url: null }} />
+          <SourceTag fact={{ source: "job_post", url: null }} /><span className="tag web">A site name: a page we read ↗</span>
           <SourceTag fact={{ source: "resume", url: null }} /><SourceTag fact={{ source: "general", url: null }} />
         </div>
         {partial && (
@@ -190,6 +190,11 @@ function BriefForm({ brief, partial, sourceUrl, postingText, onRerun }: {
         </div>
       </section>
 
+      <section className="card rise d3" style={{ ...col(18), padding: 32, marginTop: 20 }}>
+        <h2 className="serif" style={{ fontSize: 32 }}>Requirements, against your resume</h2>
+        {brief.requirements.length ? <RequirementRows items={brief.requirements} /> : <p>Not found yet.</p>}
+      </section>
+
       <section style={{ padding: "72px 0 32px", display: "flex", justifyContent: "space-between", alignItems: "end", gap: 16, flexWrap: "wrap" }}>
         <div style={col(10)}>
           <h2 className="serif rise" style={{ fontSize: "clamp(34px, 6vw, 48px)", lineHeight: 1.05 }}>
@@ -208,7 +213,7 @@ function BriefForm({ brief, partial, sourceUrl, postingText, onRerun }: {
               <span className="serif ital" style={{ fontSize: 22 }}>{i + 1}</span>
               <span className="serif" style={{ fontSize: 28, flex: "1 1 200px" }}>{r.name || "Unnamed round"}</span>
               <span style={{ fontSize: 14 }}>{roundMeta(r)}</span>
-              <SourceTag fact={{ source: r.source, url: null }} />
+              <SourceTag fact={r} />
               {r.done && <span className="tag" style={{ borderColor: "var(--olive)", color: "var(--olive)" }}>Done · Advanced</span>}
               <span className="ink" aria-hidden="true">⌄</span>
             </summary>
@@ -217,6 +222,7 @@ function BriefForm({ brief, partial, sourceUrl, postingText, onRerun }: {
                 <div style={col(10)}><span className="eyebrow">What is asked</span>{r.asks.length ? <FactRows facts={r.asks} /> : <p>Not researched. You can add this on the job page.</p>}</div>
                 <div style={col(10)}><span className="eyebrow">What is expected</span>{r.expects.length ? <FactRows facts={r.expects} /> : <p>Not researched. You can add this on the job page.</p>}</div>
               </div>
+              {r.scorecard.length > 0 && <div style={col(10)}><span className="eyebrow">Scorecard · what this round is scored on</span><CriterionRows items={r.scorecard} /></div>}
               <hr className="rule" />
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))", gap: 28 }}>
                 <div className="field"><label htmlFor={`r${r.key}-name`}>Round name</label>

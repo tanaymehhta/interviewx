@@ -159,8 +159,14 @@ Generating main questions up front keeps the live interview responsive: only the
 Upgraded answers: the prompt forbids new facts and requires `[placeholder]` for missing numbers; the schema returns a `placeholders` array the UI highlights.
 
 ### 4. Job research: posting read in code, search through OpenRouter
-Changed 2026-11-19 with decision 3. The posting link is read by a plain server-side fetch and reduced to text; pages that need a login or are drawn by JavaScript count as unreadable and the UI asks for pasted text. Searching (interview reports, company values) uses OpenRouter's web search server tool, so one key covers the model and search. Both live in `gatherWeb` in `lib/research.ts`. Fallback if postings are too often unreadable: Firecrawl for the read step. The spec does not change either way.
-Research runs as one route that streams step events ("Reading the job post", "Searching interview reports", …) so the UI shows live progress; hard stop at 90 s with a partial brief. Every brief item carries `source: 'job_post' | 'web' | 'resume' | 'general'` and `url` for web items. Login-walled links (LinkedIn) are detected from the fetch result and the UI asks for pasted text.
+Changed 2026-11-20. Four steps, all in `lib/research.ts` and `lib/posting.ts`:
+
+1. **Read the posting** by plain server-side fetch: Workday links through Workday's public JSON endpoint, other pages through their schema.org `JobPosting` block, else the stripped page text. Pages that need a login or are drawn by JavaScript count as unreadable and the UI asks for pasted text.
+2. **Search** with OpenRouter's web search server tool: one search per query, run together (candidate reports on Reddit and Glassdoor, the interview process, the company's hiring pages, and a current posting when none was given). Only the result pages and their excerpts are kept. The search tool has no site filter, so the site names in a query are hints.
+3. **Build the brief** in one structured call from the posting, the page excerpts, and the resume. The brief holds what the company wants, 5 to 8 requirements each checked against the resume, the skills, and for each round what is asked, what is expected, and a scorecard of 3 to 5 criteria. In code, a "web" item must cite a page the search returned, or it becomes "general".
+4. **Check the claims** in a second call: each "web" item is compared with its page excerpt, and an unsupported item becomes "general" (shown as "Inferred · not verified"). If the check fails, the brief says the source check did not finish.
+
+A web tag shows the site name (Reddit, Glassdoor, or the host). Round scorecards are stored in `rounds.scorecard`; a Full interview review scores each criterion 0 to 10 beside the four fixed sub-scores.
 
 ### 5. Deterministic logic stays in code
 Pure functions in `lib/coach.ts`, unit-tested:

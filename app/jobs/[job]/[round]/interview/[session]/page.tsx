@@ -4,7 +4,7 @@ import { CountUp } from "@/components/CountUp";
 import { FeedbackCard } from "@/components/FeedbackCard";
 import { FinishReview } from "@/components/interview/FinishReview";
 import { TopBar } from "@/components/TopBar";
-import { Bar, Button, fmtDate, fmtTime, RoundFitList, SwotGrid } from "@/components/ui";
+import { Bar, Button, fmtDate, fmtTime, RoundFitList, ScoreList, SwotGrid } from "@/components/ui";
 import type { Feedback, InterviewScript, StoredReview } from "@/lib/schemas";
 import { MIN_WORDS, wordCount } from "@/lib/score";
 import { requireJob } from "@/lib/server";
@@ -90,6 +90,14 @@ export default async function Page({ params }: { params: Promise<{ job: string; 
             <p style={{ marginTop: -10 }}>What {ctx.job.company} expects in the {round.name.toLowerCase()} round, and how this interview did.</p>
             {review.round_fit.length ? <RoundFitList items={review.round_fit} /> : <p style={{ fontSize: 14 }}>This round has no listed expectations yet.</p>}
           </section>
+
+          {(review.scorecard ?? []).length > 0 && (
+            <section className="rise d4" style={{ display: "flex", flexDirection: "column", gap: 18, paddingBottom: 56 }}>
+              <h2 className="serif" style={{ fontSize: 36 }}>Round scorecard</h2>
+              <p style={{ marginTop: -10 }}>What the {round.name.toLowerCase()} round is scored on, and your score on each from this interview.</p>
+              <div className="card" style={{ padding: 28 }}><ScoreList items={review.scorecard} /></div>
+            </section>
+          )}
 
           <section className="rise d5" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 460px), 1fr))", gap: 20, paddingBottom: 56 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>

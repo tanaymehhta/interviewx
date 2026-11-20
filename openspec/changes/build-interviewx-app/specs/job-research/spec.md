@@ -39,6 +39,27 @@ The research SHALL produce: what the company generally wants (values, traits, wh
 - **WHEN** research completes for Salesforce Sales Manager
 - **THEN** the brief lists each likely round with format, length, what is asked, and what is expected, and a company section with what Salesforce looks for
 
+### Requirement: Requirements against the resume
+The research SHALL list the job's requirements, taken from the posting when one exists, and mark each one met, partly met, or missing against the person's resume with a short reason.
+
+#### Scenario: Posting with a years requirement
+- **WHEN** the posting asks for 7 years of experience and the resume shows 3
+- **THEN** that requirement is listed as partly met or missing with the reason
+
+### Requirement: Round scorecard
+The research SHALL give each round a scorecard of 3 to 5 criteria, each with what a strong candidate shows and a source tag. A Full interview review for that round SHALL score every criterion from 0 to 10.
+
+#### Scenario: Review against the scorecard
+- **WHEN** the person finishes a Full interview for a round with three criteria
+- **THEN** the results show a score and a short reason for each of the three
+
+### Requirement: Source check
+A fact tagged From the web SHALL cite a page the search returned and SHALL be supported by that page's text. A fact that fails either test SHALL be shown as inferred and not verified. The web tag SHALL show the site name.
+
+#### Scenario: Unsupported claim
+- **WHEN** a round question cites a page that does not contain it
+- **THEN** the question is shown as inferred and not verified, with no link
+
 ### Requirement: Source tags
 Every fact in the brief SHALL carry one source tag: From the job post, From the web (with a clickable link), From your resume, or General knowledge. General knowledge items SHALL show a "not verified" label.
 

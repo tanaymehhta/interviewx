@@ -20,6 +20,16 @@ export function fitForRound(expects: string[], model: RoundFit): RoundFit {
   });
 }
 
+type Score = { criterion: string; score: number; note: string };
+/** One score for every criterion of the round scorecard, in its order and wording. A skipped criterion scores 0. */
+export function scoresForRound(criteria: string[], model: Score[]): Score[] {
+  const norm = (s: string) => s.trim().toLowerCase();
+  return criteria.map((criterion, i) => {
+    const m = model.find((c) => norm(c.criterion) === norm(criterion)) ?? (model.length === criteria.length ? model[i] : undefined);
+    return { criterion, score: Math.min(10, Math.max(0, Math.round(m?.score ?? 0))), note: m?.note ?? "Not covered" };
+  });
+}
+
 /** Complete when every planned question was asked, or the chosen length ran out. Otherwise it ended early. */
 export function endStatus(s: { asked: number; planned: number; startedAt: string; lastAnswerAt: string; lengthMinutes: number | null }) {
   // ponytail: wall clock, so a long Pause followed by End interview can count as complete; store paused seconds if that matters.

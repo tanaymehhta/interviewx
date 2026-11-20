@@ -3,7 +3,7 @@ import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Tables } from "@/lib/database.types";
-import type { Fact, ResumeAnalysis, StoredBrief } from "@/lib/schemas";
+import type { Criterion, Fact, ResumeAnalysis, StoredBrief } from "@/lib/schemas";
 import { activeRound, roundReadiness, weakestSkill } from "@/lib/coach";
 
 /** Model for every AI call, through OpenRouter. Reads OPENROUTER_API_KEY. */
@@ -40,9 +40,9 @@ export async function requireProfile() {
 
 export type JobContext = {
   job: Tables<"jobs"> & { brief: StoredBrief };
-  rounds: (Tables<"rounds"> & { asks: Fact[]; expects: Fact[] })[];
+  rounds: (Tables<"rounds"> & { asks: Fact[]; expects: Fact[]; scorecard: Criterion[] })[];
   skills: Tables<"skills">[];
-  round: (Tables<"rounds"> & { asks: Fact[]; expects: Fact[] }) | null;
+  round: (Tables<"rounds"> & { asks: Fact[]; expects: Fact[]; scorecard: Criterion[] }) | null;
   /** Skills the selected round tests (all job skills when the round lists none). */
   roundSkills: Tables<"skills">[];
   readiness: number;
@@ -102,11 +102,15 @@ export function describeContext(profile: Tables<"profiles">, ctx: JobContext): s
     profile.resume_text ? `RESUME:\n${profile.resume_text.slice(0, 6000)}` : "",
     `JOB: ${ctx.job.role} at ${ctx.job.company}. ${ctx.job.brief.summary ?? ""}`,
     `WHAT ${ctx.job.company.toUpperCase()} WANTS:\n${facts(ctx.job.brief.company_wants ?? [])}`,
+    ctx.job.brief.requirements?.length
+      ? `JOB REQUIREMENTS (against the resume):\n${ctx.job.brief.requirements.map((q) => `- ${q.text} [${q.status}${q.note ? `: ${q.note}` : ""}]`).join("\n")}`
+      : "",
     `JOB SKILLS (score 0-100): ${ctx.skills.map((s) => `${s.name} ${s.score}`).join(", ")}`,
     r
       ? `ROUND: ${r.name} (${[r.format, r.length_minutes && `${r.length_minutes} min`, r.interviewer_type].filter(Boolean).join(", ")}).` +
         (r.interviewer_notes ? ` Interviewer notes from the candidate: ${r.interviewer_notes}.` : "") +
         `\nWHAT THIS ROUND ASKS:\n${facts(r.asks)}\nWHAT THIS ROUND EXPECTS:\n${facts(r.expects)}` +
+        (r.scorecard.length ? `\nROUND SCORECARD:\n${r.scorecard.map((c) => `- ${c.criterion}: ${c.strong}`).join("\n")}` : "") +
         (r.asked_questions.length ? `\nQuestions asked in the real round: ${r.asked_questions.join(" | ")}` : "")
       : "",
     ctx.weakest ? `Weakest skill for this round: ${ctx.weakest.name} (${ctx.weakest.score}).` : "",

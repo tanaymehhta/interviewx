@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from "react";
 import type { Brief } from "@/lib/schemas";
 import type { ResearchEvent } from "@/lib/research";
 
-export const RESEARCH_STEPS = ["Reading the job post", "Searching interview reports", "Checking company values", "Matching against your resume"];
+export const RESEARCH_STEPS = ["Reading the job post", "Searching interview reports and company pages", "Building the brief against your resume", "Checking each fact against its source"];
 
 type State = {
   status: "idle" | "busy" | "done" | "needs_text" | "error";

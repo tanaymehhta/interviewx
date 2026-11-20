@@ -1,7 +1,7 @@
 "use client";
 import { useState, useTransition } from "react";
 import { Button, fmtDate, Steps, TextLink } from "@/components/ui";
-import { FactRows } from "@/components/jobs/bits";
+import { FactRows, RequirementRows } from "@/components/jobs/bits";
 import { RESEARCH_STEPS, useResearch } from "@/components/jobs/useResearch";
 import type { Brief, Fact, StoredBrief } from "@/lib/schemas";
 import { saveBrief, type BriefSave } from "./actions";
@@ -109,7 +109,11 @@ export function BriefCard({ jobId, company, brief, rounds }: { jobId: string; co
         })}
         {error && <p className="err" role="alert">{error}</p>}
         <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap" }}>
-          <Button small disabled={saving} onClick={() => save(toSave(merged, rounds, { summary: found.summary, missing: found.missing }))}>{saving ? "Saving…" : "Save new research"}</Button>
+          <Button small disabled={saving} onClick={() => {
+            const data = toSave(merged, rounds, { summary: found.summary, missing: found.missing, requirements: found.requirements });
+            const card = (id: string) => found.rounds.find((x) => x.name.trim().toLowerCase() === rounds.find((y) => y.id === id)?.name.trim().toLowerCase())?.scorecard;
+            save({ ...data, rounds: data.rounds.map((x) => ({ ...x, scorecard: card(x.id) })) });
+          }}>{saving ? "Saving…" : "Save new research"}</Button>
           <TextLink disabled={saving} onClick={() => { r.reset(); setDropped([]); }}>Discard new findings</TextLink>
         </div>
       </div>
@@ -144,6 +148,12 @@ export function BriefCard({ jobId, company, brief, rounds }: { jobId: string; co
       {head(<TextLink onClick={() => { setError(""); setDraft(groups); }} style={{ fontSize: 14 }}>Edit</TextLink>)}
       {brief.summary && <p className="ink">{brief.summary}</p>}
       {(brief.company_wants ?? []).length > 0 && <FactRows facts={brief.company_wants} />}
+      {(brief.requirements ?? []).length > 0 && (
+        <details>
+          <summary className="tlink" style={{ fontSize: 14, display: "inline" }}>Requirements, against your resume</summary>
+          <div style={{ paddingTop: 14 }}><RequirementRows items={brief.requirements!} /></div>
+        </details>
+      )}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
         {count("web") > 0 && <span className="tag web">{count("web")} from the web</span>}
         {count("job_post") > 0 && <span className="tag post">{count("job_post")} from the job post</span>}

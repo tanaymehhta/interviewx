@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { buildPlan } from "@/lib/coach";
-import { BriefRound, Fact, LIMITS, Source, type StoredBrief } from "@/lib/schemas";
+import { BriefRound, Fact, LIMITS, Requirement, Source, type StoredBrief } from "@/lib/schemas";
 import { getUser, localNow } from "@/lib/server";
 
 const short = z.string().trim().max(400);
@@ -13,6 +13,7 @@ const NewJob = z.object({
   postingText: z.string().max(LIMITS.posting).nullable(),
   summary: z.string().max(1000),
   company_wants: z.array(Fact).max(20),
+  requirements: z.array(Requirement).max(20),
   missing: z.array(short).max(10),
   skills: z.array(z.object({ name: short.min(1), reason: z.string().max(600), source: Source })).max(12),
   rounds: z.array(BriefRound.extend({
@@ -33,7 +34,7 @@ export async function createJob(input: NewJob): Promise<{ error: string }> {
   const d = parsed.data;
   const { today } = await localNow();
 
-  const brief: StoredBrief = { summary: d.summary, company_wants: d.company_wants, missing: d.missing, researched_at: new Date().toISOString() };
+  const brief: StoredBrief = { summary: d.summary, company_wants: d.company_wants, requirements: d.requirements, missing: d.missing, researched_at: new Date().toISOString() };
   const { data: job } = await supabase.from("jobs")
     .insert({ company: d.company, role: d.role, source_url: d.sourceUrl, posting_text: d.postingText, brief })
     .select("id").single();
@@ -47,7 +48,7 @@ export async function createJob(input: NewJob): Promise<{ error: string }> {
     const idOf = new Map(skills.map((s) => [s.name, s.id]));
     const { data: rounds } = await supabase.from("rounds").insert(d.rounds.map((r, i) => ({
       job_id: job.id, position: i + 1, name: r.name, format: r.format, length_minutes: Math.round(r.length_minutes) || null,
-      interviewer_type: r.interviewer_type, asks: r.asks, expects: r.expects,
+      interviewer_type: r.interviewer_type, asks: r.asks, expects: r.expects, scorecard: r.scorecard,
       skill_ids: r.skills.flatMap((n) => idOf.get(n) ?? []), date: r.date, interviewer_notes: r.notes || null,
       outcome: r.done ? "advanced" : null,
     }))).select("id, date, skill_ids, outcome");
